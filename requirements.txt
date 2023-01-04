@@ -1,0 +1,14 @@
+contractions==0.1.73
+customtkinter==5.0.3
+dill==0.3.6
+matplotlib==3.5.1
+nltk==3.7
+numpy==1.21.6
+pandas==1.5.2
+pandas_stubs==1.2.0.58
+pycountry==22.3.5
+scikit_learn==1.2.0
+seaborn==0.12.1
+simplemma==0.9.0
+texthero==1.1.0
+yellowbrick==1.5
