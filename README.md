@@ -36,7 +36,7 @@ Two different datasets is used to test the correct behavior of the application:
 
 #### AGNews
 * Accuracy:
-  - MultinomialNB = 0.89
+  - MultinomialNB = 0.90
   - LogisticRegression = 0.91
   - SGDClassifier = 0.91
 
@@ -101,4 +101,4 @@ The statistics on classifiers are for each classifier.
 
 The image below is the home of application:
 
-![application_home](figure/app/app_home.png)
+![application_home](img/app_home.png)
