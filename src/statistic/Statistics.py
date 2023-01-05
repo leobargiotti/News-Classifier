@@ -35,7 +35,8 @@ class Statistics:
 
     def calculate_information(self):
         """
-        Method to compute same information about dataset and preprocess
+        Method to compute information about before and after preprocess:
+        first rows, class distribution, duplicates and numbers of row
         :return: list of two strings (information before and after preprocess)
         """
         train_original = self.classifier.train_original
@@ -116,7 +117,7 @@ class Statistics:
 
     def statistics(self):
         """
-        Method to display same statistics
+        Method to display most relevant words for Multinomial classifier and top words in training and test set
         """
         most_frequent_words_train = hero.top_words(self.classifier.model[0].transform(self.classifier.X_train))[:15]
         most_frequent_words_test = hero.top_words(self.classifier.model[0].transform(self.classifier.X_test))[:15]

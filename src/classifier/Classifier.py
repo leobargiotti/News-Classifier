@@ -7,7 +7,7 @@ import time
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.pipeline import Pipeline
 
-from utils.utils import calculate_train_test_classes, clean_dataset
+from utils.utils import calculate_train_test_classes, remove_duplicates_and_nan_values
 from .TextPreprocessor import TextPreprocessor
 from configuration.ConfigFile import ConfigFile
 
@@ -17,7 +17,7 @@ class Classifier:
         self.name = str(self.__class__).split(".")[- 2]
         self.path_pipeline = path_pipeline
         self.config_file = ConfigFile()
-        self.train_original, self.train_cleaned, self.test_original, self.test_cleaned = clean_dataset(self.config_file)
+        self.train_original, self.train_cleaned, self.test_original, self.test_cleaned = remove_duplicates_and_nan_values(self.config_file)
         self.X_train, self.X_test, self.y_train, self.y_test, self.classes = calculate_train_test_classes(
             self.train_cleaned, self.test_cleaned, self.config_file)
         self.model = self.create_model() if not self.is_present_model() else self.load_model()

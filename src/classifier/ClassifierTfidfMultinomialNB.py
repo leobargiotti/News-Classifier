@@ -9,7 +9,7 @@ from .Classifier import Classifier
 class ClassifierTfidfMultinomialNB(Classifier):
 
     def __init__(self):
-        Classifier.__init__(self, "../model_saved/TfidfMultinomialNB.pk")
+        Classifier.__init__(self, "../models_saved/TfidfMultinomialNB.pk")
 
     def create_pipeline(self):
         """

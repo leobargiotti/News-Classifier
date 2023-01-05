@@ -72,7 +72,7 @@ def create_dictionary_classes(int_classes, name_classes):
     return dict(zip(int_class, name_class))
 
 
-def clean_text(data, column_text, column_target):
+def drop_duplicate_and_nan(data, column_text, column_target):
     """
     Method to remove duplicates and Nan values
     :param data: dataframe to remove duplicates and Nan values
@@ -85,7 +85,7 @@ def clean_text(data, column_text, column_target):
     return data
 
 
-def clean_dataset(config_file):
+def remove_duplicates_and_nan_values(config_file):
     """
     Method to remove duplicates and Nan values
     :param config_file: configuration file
@@ -94,10 +94,10 @@ def clean_dataset(config_file):
     path_train, path_test, column_text, column_target = config_file.path_training, config_file.path_test, \
                                                          config_file.column_text, config_file.column_target
     train_original = pd.read_csv(path_train)
-    train_cleaned = clean_text(train_original, column_text, column_target)
+    train_cleaned = drop_duplicate_and_nan(train_original, column_text, column_target)
     if not str(path_test).lower() == "null":
         test_original = pd.read_csv(path_test)
-        test_cleaned = clean_text(test_original, column_text, column_target)
+        test_cleaned = drop_duplicate_and_nan(test_original, column_text, column_target)
         return train_original, train_cleaned, test_original, test_cleaned
     else:
         return train_original, train_cleaned, None, None

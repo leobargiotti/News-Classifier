@@ -23,14 +23,14 @@ The process to classify the text has composed by three steps:
    - <a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html">LogisticRegression</a>
    - <a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDClassifier.html">SGDClassifier</a>
    * To find the best parameters of classifiers is used <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html">GridSearchCV</a>
-   * Model of classifiers are saved in [model_saved folder](model_saved), so every time that application restarts doesn't refit models but 
+   * Model of classifiers are saved in [model_saved folder](models_saved), so every time that application restarts doesn't refit models but 
    loads them from the folder. Otherwise, application fits and save models when the dataset changes. 
 
 ## Data
 
 Two different datasets is used to test the correct behavior of the application:
 - <a href="https://www.kaggle.com/datasets/amananandrai/ag-news-classification-dataset">AG News</a> (default configuration)
-- <a href="https://www.kaggle.com/code/rockystats/bbc-text-classification-word2vec-vs-tf-idf/data">BBC News</a>
+- <a href="https://www.kaggle.com/datasets/yufengdev/bbc-fulltext-and-category">BBC News</a>
 
 ## Models Evaluations
 
@@ -42,7 +42,7 @@ Two different datasets is used to test the correct behavior of the application:
 
 #### BBC News
 * Accuracy:
-  - MultinomialNB = 0.98
+  - MultinomialNB = 0.97
   - LogisticRegression = 0.98
   - SGDClassifier = 0.98
 
@@ -56,7 +56,6 @@ News Classifier needs the following libraries:
 - <a href="https://www.nltk.org">NLTK</a>
 - <a href="https://numpy.org/">NumPy</a>
 - <a href="https://pandas.pydata.org/">Pandas</a>
-- <a href="https://pypi.org/project/pandas-stubs/">Pandas-stubs</a>
 - <a href="https://pypi.org/project/pycountry/">Pycountry</a>
 - <a href="https://scikit-learn.org/stable/">SKLearn</a>
 - <a href="https://seaborn.pydata.org">Seaborn</a>

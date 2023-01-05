@@ -9,7 +9,7 @@ from .Classifier import Classifier
 class ClassifierTfidfSGD(Classifier):
 
     def __init__(self):
-        Classifier.__init__(self, "../model_saved/TfidfSGD.pk")
+        Classifier.__init__(self, "../models_saved/TfidfSGD.pk")
 
     def create_pipeline(self):
         """

@@ -24,16 +24,15 @@ class PreprocessingSteps:
 
     def clean_text(self):
         """
-        Method to lowercase and remove html tags, punctuation, diacritics, digits, extra whitespaces and stopwords
+        Method to lowercase and remove html tags, URLs, punctuation, diacritics, digits, extra whitespaces and stopwords
         :return: itself (PreprocessingSteps)
         """
-        custom_pipeline = [ppe.lowercase, ppe.remove_html_tags, ppe.remove_punctuation, ppe.remove_diacritics,
-                           ppe.remove_digits, ppe.remove_whitespace]
-        self.X = hero.clean(s=self.X, pipeline=custom_pipeline)
+        self.X = hero.replace_urls(self.X, " ")
+        self.X = hero.remove_digits(self.X, only_blocks=False)
+        self.X = hero.clean(s=self.X, pipeline=[ppe.remove_html_tags, ppe.remove_punctuation, ppe.remove_diacritics, ppe.lowercase])
+        for i in ["\\", "<", ">", "'", "-", '"']: self.X = self.X.apply(lambda x: x.replace(i, " "))
         self.X = hero.remove_stopwords(self.X, self.stopwords)
-        replace_array = ["\\", "<", ">", "'", "-", "\n"]
-        for i in range(len(replace_array)):
-            self.X = self.X.apply(lambda x: x.replace(replace_array[i], " "))
+        self.X = hero.remove_whitespace(self.X)
         return self
 
     def stem(self):
