@@ -61,6 +61,7 @@ News Classifier needs the following libraries:
 - <a href="https://seaborn.pydata.org">Seaborn</a>
 - <a href="https://pypi.org/project/simplemma/">Simplemma</a>
 - <a href="https://texthero.org">Texthero</a>
+- <a href="https://tqdm.github.io">Tqdm</a>
 - <a href="https://www.scikit-yb.org/en/latest/">Yellowbrick</a>
 
 [Here](requirements.txt) are present the file with dependencies of the project.

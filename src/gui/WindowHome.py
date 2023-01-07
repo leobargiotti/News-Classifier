@@ -23,9 +23,7 @@ class WindowHome(customtkinter.CTk):
         self.geometry(f"{WindowHome.WIDTH}x{WindowHome.HEIGHT}")
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
-        self.classifierTfidfMultinomialNB = ClassifierTfidfMultinomialNB()
-        self.classifierTfidfLogReg = ClassifierTfidfLogReg()
-        self.classifierTfidfSGD = ClassifierTfidfSGD()
+        self.classifiers = [ClassifierTfidfMultinomialNB(),  ClassifierTfidfLogReg(), ClassifierTfidfSGD()]
 
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(0, weight=1)
@@ -142,20 +140,14 @@ class WindowHome(customtkinter.CTk):
         """
         Method to display class prediction and probability of classifiers
         """
-        self.label_output[0].configure(
-            text=self.classifierTfidfMultinomialNB.calculate_class(self.text_input.get("0.0", "end")))
-        self.label_output[1].configure(
-            text=self.classifierTfidfLogReg.calculate_class(self.text_input.get("0.0", "end")))
-        self.label_output[2].configure(
-            text=self.classifierTfidfSGD.calculate_class(self.text_input.get("0.0", "end")))
+        for index in range(len(self.classifiers)):
+            self.label_output[index].configure(text=self.classifiers[index].calculate_class(self.text_input.get("0.0", "end")))
 
     def reload_config_classifier(self):
         """
         Method to initialize classifiers
         """
-        self.classifierTfidfMultinomialNB.reload_config()
-        self.classifierTfidfLogReg.reload_config()
-        self.classifierTfidfSGD.reload_config()
+        for classifier in self.classifiers: classifier.reload_config()
 
     def button_event_config(self):
         """

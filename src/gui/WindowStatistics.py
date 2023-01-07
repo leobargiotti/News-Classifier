@@ -10,13 +10,9 @@ class WindowStatistics(customtkinter.CTk):
         super().__init__()
 
         self.parentWindow = parentWindow
-        self.statistic_classifierTfidfMultinomialNB = Statistics(self.parentWindow.classifierTfidfMultinomialNB,
-                                                                 self.parentWindow.classifierTfidfMultinomialNB.
-                                                                 config_file)
-        self.statistic_classifierTfidfLogReg = Statistics(self.parentWindow.classifierTfidfLogReg,
-                                                          self.parentWindow.classifierTfidfLogReg.config_file)
-        self.statistic_classifierTfidfSGD = Statistics(self.parentWindow.classifierTfidfSGD,
-                                                       self.parentWindow.classifierTfidfSGD.config_file)
+
+        self.statistic_classifiers = [Statistics(classifier, classifier.config_file) for classifier in
+                                      self.parentWindow.classifiers]
 
         self.title("Statistics")
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
@@ -52,13 +48,14 @@ class WindowStatistics(customtkinter.CTk):
                                                                  border_width=2,
                                                                  fg_color=None,
                                                                  command=self.button_event_dataset[index])
-            self.button_dataset[index].grid(row=1 + int(index/3), column=index % 3, pady=20, padx=20, sticky="we")
+            self.button_dataset[index].grid(row=1 + int(index / 3), column=index % 3, pady=20, padx=20, sticky="we")
 
-        self.button_dataset[1].configure(state="normal" if self.statistic_classifierTfidfMultinomialNB.
-                                         classifier.test_cleaned is not None else "disabled")
+        self.button_dataset[1].configure(
+            state="normal" if self.statistic_classifiers[0].classifier.test_cleaned is not None else "disabled")
 
-        self.button_dataset[0].configure(text="Class Distribution Dataset" if self.statistic_classifierTfidfMultinomialNB.
-                                         classifier.test_cleaned is None else self.text_dataset[0])
+        self.button_dataset[0].configure(
+            text="Class Distribution Dataset" if self.statistic_classifiers[0].classifier.test_cleaned is None else
+            self.text_dataset[0])
         # ============ Button Classifiers ============
 
         self.button_classifier = ["button_metrics_1", "button_metrics_2", "button_metrics_3",
@@ -66,17 +63,19 @@ class WindowStatistics(customtkinter.CTk):
                                   "button_roc_1", "button_roc_2", "button_roc_3", "button_class_predict_error_1",
                                   "button_class_predict_error_2", "button_class_predict_error_3"]
 
-        self.text_classifier = ["Classification Report Config.1", "Classification Report Config.2", "Classification Report Config.3",
+        self.text_classifier = ["Classification Report Config.1", "Classification Report Config.2",
+                                "Classification Report Config.3",
                                 "Confusion Matrix Config. 1", " Confusion Matrix Config. 2",
                                 "Confusion Matrix Config. 3", "AUC Config.1", "AUC Config.2", "AUC Config.3",
                                 "Class Predict. Error Config. 1", "Class Predict. Error Config. 2",
                                 "Class Predict. Error Config. 3"]
 
-        self.button_event_classifier = [self.button_event_metrics_1,  self.button_event_metrics_2,
+        self.button_event_classifier = [self.button_event_metrics_1, self.button_event_metrics_2,
                                         self.button_event_metrics_3, self.button_event_cm1, self.button_event_cm2,
                                         self.button_event_cm3, self.button_event_roc_1, self.button_event_roc_2,
                                         self.button_event_roc_3, self.button_event_class_predict_error_1,
-                                        self.button_event_class_predict_error_2, self.button_event_class_predict_error_3]
+                                        self.button_event_class_predict_error_2,
+                                        self.button_event_class_predict_error_3]
 
         self.label_dataset = customtkinter.CTkLabel(master=self.frame_statistics,
                                                     text="Statistics on Classifiers:",
@@ -89,7 +88,7 @@ class WindowStatistics(customtkinter.CTk):
                                                                     border_width=2,
                                                                     fg_color=None,
                                                                     command=self.button_event_classifier[index])
-            self.button_classifier[index].grid(row=9 + int(index/3),  column=index % 3, pady=20, padx=20, sticky="we")
+            self.button_classifier[index].grid(row=9 + int(index / 3), column=index % 3, pady=20, padx=20, sticky="we")
 
     def create_toplevel(self, metrics, title):
         """
@@ -101,7 +100,7 @@ class WindowStatistics(customtkinter.CTk):
         window.title(title)
         window.frame = customtkinter.CTkFrame(master=window)
         window.frame.grid(pady=20, padx=20, sticky="nsew")
-        label = customtkinter.CTkLabel(master=window.frame, text=metrics, justify=tkinter.LEFT, font=("Courier", 16))
+        label = customtkinter.CTkLabel(master=window.frame, text=metrics, justify=tkinter.LEFT, font=("Courier", 14))
         label.pack(side="top", fill="both", expand=True, padx=20, pady=20)
 
     def create_toplevel_information(self, column0, column1):
@@ -114,9 +113,9 @@ class WindowStatistics(customtkinter.CTk):
         window.title("Information on Dataset")
         window.frame = customtkinter.CTkFrame(master=window)
         window.frame.grid(row=1, column=2, pady=20, padx=20, sticky="nsew")
-        window.label_1 = customtkinter.CTkLabel(master=window.frame, text=column0, justify=tkinter.LEFT)
+        window.label_1 = customtkinter.CTkLabel(master=window.frame, text=column0, justify=tkinter.LEFT, font=("Courier", 14))
         window.label_1.grid(row=0, column=0, pady=10, padx=10)
-        window.label_1 = customtkinter.CTkLabel(master=window.frame, text=column1, justify=tkinter.LEFT)
+        window.label_1 = customtkinter.CTkLabel(master=window.frame, text=column1, justify=tkinter.LEFT, font=("Courier", 14))
         window.label_1.grid(row=0, column=1, pady=10, padx=10)
 
     # DATASET
@@ -125,61 +124,52 @@ class WindowStatistics(customtkinter.CTk):
         """
         Method to display class distribution statistic of training set
         """
-        self.statistic_classifierTfidfMultinomialNB.class_distribution(self.statistic_classifierTfidfMultinomialNB.
-                                                                       classifier.train_original,
-                                                                       self.statistic_classifierTfidfMultinomialNB.
-                                                                       classifier.train_cleaned)
+        self.statistic_classifiers[0].class_distribution(self.statistic_classifiers[0].classifier.train_original,
+                                                         self.statistic_classifiers[0].classifier.train_cleaned)
 
     def button_event_class_distribution_test(self):
         """
         Method to display class distribution statistic of test set
         """
-        self.statistic_classifierTfidfMultinomialNB.class_distribution(self.statistic_classifierTfidfMultinomialNB.
-                                                                       classifier.test_original,
-                                                                       self.statistic_classifierTfidfMultinomialNB.
-                                                                       classifier.test_cleaned)
+        self.statistic_classifiers[0].class_distribution(self.statistic_classifiers[0].classifier.test_original,
+                                                         self.statistic_classifiers[0].classifier.test_cleaned)
 
     def button_event_information(self):
         """
         Method to display information on dataset
         """
-        column0, column1 = self.statistic_classifierTfidfMultinomialNB.calculate_information()
+        column0, column1 = self.statistic_classifiers[0].calculate_information()
         self.create_toplevel_information(column0, column1)
 
     def button_event_wordcloud_train(self):
         """
         Method to display wordcloud of training set
         """
-        self.statistic_classifierTfidfMultinomialNB.wordcloud(self.statistic_classifierTfidfMultinomialNB.classifier.
-                                                              X_train, "training")
+        self.statistic_classifiers[0].wordcloud(self.statistic_classifiers[0].classifier.X_train, "training")
 
     def button_event_wordcloud_test(self):
         """
         Method to display wordcloud of test set
         """
-        self.statistic_classifierTfidfMultinomialNB.wordcloud(self.statistic_classifierTfidfMultinomialNB.classifier.
-                                                              X_test, "test")
+        self.statistic_classifiers[0].wordcloud(self.statistic_classifiers[0].classifier.X_test, "test")
 
     def button_event_top20_train(self):
         """
         Method to display 20 most frequent words of training set
         """
-        self.statistic_classifierTfidfMultinomialNB.show_top20(self.statistic_classifierTfidfMultinomialNB.classifier.
-                                                               X_train, "training")
+        self.statistic_classifiers[0].show_top20(self.statistic_classifiers[0].classifier.X_train, "training")
 
     def button_event_top20_test(self):
         """
         Method to display 20 most frequent words of test set
         """
-        self.statistic_classifierTfidfMultinomialNB.show_top20(self.statistic_classifierTfidfMultinomialNB.classifier.
-                                                               X_test, "test")
+        self.statistic_classifiers[0].show_top20(self.statistic_classifiers[0].classifier.X_test, "test")
 
     def button_event_statistics(self):
         """
         Method to display same statistics on dataset
         """
-        self.create_toplevel(self.statistic_classifierTfidfMultinomialNB.statistics(),
-                             "Statistics on words in Dataset")
+        self.create_toplevel(self.statistic_classifiers[0].statistics(), "Statistics on words in Dataset")
 
     # CLASSIFIER
 
@@ -187,73 +177,73 @@ class WindowStatistics(customtkinter.CTk):
         """
         Method to display classification report of classifierTfidfMultinomialNB
         """
-        self.create_toplevel(self.statistic_classifierTfidfMultinomialNB.calculate_metrics(), "Metrics Configuration 1")
+        self.create_toplevel(self.statistic_classifiers[0].calculate_metrics(), "Metrics Configuration 1")
 
     def button_event_metrics_2(self):
         """
         Method to display classification report of classifierTfidfLogReg
         """
-        self.create_toplevel(self.statistic_classifierTfidfLogReg.calculate_metrics(), "Metrics Configuration 2")
+        self.create_toplevel(self.statistic_classifiers[1].calculate_metrics(), "Metrics Configuration 2")
 
     def button_event_metrics_3(self):
         """
         Method to display classification report of classifierTfidfSGD
         """
-        self.create_toplevel(self.statistic_classifierTfidfSGD.calculate_metrics(), "Metrics Configuration 3")
+        self.create_toplevel(self.statistic_classifiers[2].calculate_metrics(), "Metrics Configuration 3")
 
     def button_event_cm1(self):
         """
         Method to display confusion matrix of classifierTfidfMultinomialNB
         """
-        self.statistic_classifierTfidfMultinomialNB.confusion_matrix("Confusion Matrix Config. 1")
+        self.statistic_classifiers[0].confusion_matrix("Confusion Matrix Config. 1")
 
     def button_event_cm2(self):
         """
         Method to display confusion matrix of classifierTfidfLogReg
         """
-        self.statistic_classifierTfidfLogReg.confusion_matrix("Confusion Matrix Config. 2")
+        self.statistic_classifiers[1].confusion_matrix("Confusion Matrix Config. 2")
 
     def button_event_cm3(self):
         """
         Method to display confusion matrix of classifierTfidfSGD
         """
-        self.statistic_classifierTfidfSGD.confusion_matrix("Confusion Matrix Config. 3")
+        self.statistic_classifiers[2].confusion_matrix("Confusion Matrix Config. 3")
 
     def button_event_roc_1(self):
         """
         Method to display area under the curve of classifierTfidfMultinomialNB
         """
-        self.statistic_classifierTfidfMultinomialNB.roc()
+        self.statistic_classifiers[0].roc()
 
     def button_event_roc_2(self):
         """
         Method to display area under the curve of classifierTfidfLogReg
         """
-        self.statistic_classifierTfidfLogReg.roc()
+        self.statistic_classifiers[1].roc()
 
     def button_event_roc_3(self):
         """
         Method to display area under the curve of classifierTfidfSGD
         """
-        self.statistic_classifierTfidfSGD.roc()
+        self.statistic_classifiers[2].roc()
 
     def button_event_class_predict_error_1(self):
         """
         Method to display class prediction error of classifierTfidfMultinomialNB
         """
-        self.statistic_classifierTfidfMultinomialNB.class_prediction_error()
+        self.statistic_classifiers[0].class_prediction_error()
 
     def button_event_class_predict_error_2(self):
         """
         Method to display class prediction error of classifierTfidfLogReg
         """
-        self.statistic_classifierTfidfLogReg.class_prediction_error()
+        self.statistic_classifiers[1].class_prediction_error()
 
     def button_event_class_predict_error_3(self):
         """
         Method to display class prediction error of classifierTfidfSGD
         """
-        self.statistic_classifierTfidfSGD.class_prediction_error()
+        self.statistic_classifiers[2].class_prediction_error()
 
     def on_closing(self):
         """
