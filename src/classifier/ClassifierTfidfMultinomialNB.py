@@ -17,7 +17,8 @@ class ClassifierTfidfMultinomialNB(Classifier):
         :return: Pipeline with TextPreprocessor, TfidfVectorizer and MultinomialNB
         """
         return Pipeline(super().create_pipeline().steps.__add__(
-            [('clf', GridSearchCV(MultinomialNB(),
-                                  param_grid={'alpha': (1, 0.8, 0.7, 0.5, 0.3, 0.1, 0.05, 0.01, 0.001, 0.0001, 0.00001)},
-                                  cv=StratifiedKFold(n_splits=5),
-                                  scoring='accuracy'))]))
+            [('multinomial', GridSearchCV(MultinomialNB(),
+                                          param_grid={'alpha': (1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.1, 0.05, 0.01,
+                                                                0.001, 0.0001, 0.00001)},
+                                          cv=StratifiedKFold(n_splits=10),
+                                          scoring='accuracy'))]))

@@ -49,7 +49,7 @@ class PreprocessingSteps:
         :return: itself (PreprocessingSteps)
         """
         language_code = pycountry.languages.get(name=self.language).alpha_2
-        self.X = self.X.apply(lambda x: ' '.join([lemmatize(str(word), language_code) for word in nltk.word_tokenize(str(x))]))
+        self.X = self.X.apply(lambda x: ' '.join([lemmatize(str(word), language_code).lower() for word in nltk.word_tokenize(str(x))]))
         return self
 
     def get_processed_text(self):

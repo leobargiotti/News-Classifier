@@ -18,7 +18,7 @@ class ClassifierTfidfLogReg(Classifier):
         """
         return Pipeline(super().create_pipeline().steps.__add__([
             ('lgr', GridSearchCV(LogisticRegression(penalty='l2'),
-                                 param_grid={'C': [25, 20, 15, 10, 5, 3, 1, 0.1, 0.05, 0.01],
+                                 param_grid={'C': [100, 75, 50, 25, 15, 10, 5, 3, 1, 0.1, 0.05, 0.01],
                                  'solver': ['liblinear', 'newton-cg']},
                                  cv=StratifiedKFold(),
                                  scoring='accuracy'))]))

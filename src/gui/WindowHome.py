@@ -3,6 +3,7 @@ import customtkinter
 
 from .WindowConfiguration import WindowConfiguration
 from .WindowStatistics import WindowStatistics
+from .WindowTest import WindowTest
 from classifier.ClassifierTfidfMultinomialNB import ClassifierTfidfMultinomialNB
 from classifier.ClassifierTfidfLogReg import ClassifierTfidfLogReg
 from classifier.ClassifierTfidfSGD import ClassifierTfidfSGD
@@ -64,6 +65,13 @@ class WindowHome(customtkinter.CTk):
                                                          command=self.button_event_statistics)
         self.button_statistics.grid(row=3, column=0, columnspan=1, pady=20, padx=20, sticky="we")
 
+        self.button_statistics = customtkinter.CTkButton(master=self.frame_buttons,
+                                                         text="Test Models",
+                                                         border_width=2,
+                                                         fg_color=None,
+                                                         command=self.button_event_test)
+        self.button_statistics.grid(row=4, column=0, columnspan=1, pady=20, padx=20, sticky="we")
+
         self.label_appearance = customtkinter.CTkLabel(master=self.frame_buttons, text="Appearance Mode:")
         self.label_appearance.grid(row=9, column=0, pady=0, padx=20, sticky="w")
 
@@ -121,7 +129,7 @@ class WindowHome(customtkinter.CTk):
                                                        text="Classify",
                                                        border_width=2,
                                                        fg_color=None,
-                                                       command=self.button_event)
+                                                       command=self.button_event_classify)
         self.button_classify.grid(row=8, column=1, columnspan=1, pady=20, padx=20, sticky="we")
 
         # set default values
@@ -130,7 +138,7 @@ class WindowHome(customtkinter.CTk):
         self.windowConf = None
         self.windowStats = None
 
-    def button_event(self):
+    def button_event_classify(self):
         """
         Method to display class prediction and probability of classifiers
         """
@@ -161,6 +169,13 @@ class WindowHome(customtkinter.CTk):
         Method to open statistics window
         """
         self.windowStats = WindowStatistics(self)
+        self.windowStats.mainloop()
+
+    def button_event_test(self):
+        """
+        Method to open statistics window
+        """
+        self.windowStats = WindowTest(self)
         self.windowStats.mainloop()
 
     @staticmethod

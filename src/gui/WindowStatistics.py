@@ -101,7 +101,7 @@ class WindowStatistics(customtkinter.CTk):
         window.title(title)
         window.frame = customtkinter.CTkFrame(master=window)
         window.frame.grid(pady=20, padx=20, sticky="nsew")
-        label = customtkinter.CTkLabel(master=window.frame, text=metrics, justify=tkinter.LEFT)
+        label = customtkinter.CTkLabel(master=window.frame, text=metrics, justify=tkinter.LEFT, font=("Courier", 16))
         label.pack(side="top", fill="both", expand=True, padx=20, pady=20)
 
     def create_toplevel_information(self, column0, column1):
