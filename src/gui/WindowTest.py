@@ -27,16 +27,15 @@ class WindowTest(customtkinter.CTk):
         self.frame_test = customtkinter.CTkFrame(master=self)
         self.frame_test.grid(row=7, column=2, pady=20, padx=20, sticky="nsew")
 
-        self.label_text_classes = [list(self.parentWindow.classifiers[0].classes.values())[i]
-                                   for i in range(len(self.parentWindow.classifiers[0].classes.values()))]
+        self.label_text_classes = list(classes for classes in self.parentWindow.classifiers[0].classes.values())
 
         self.label_text = ["Column Text", "Column Classes"] + self.label_text_classes
 
         self.label = ["label_csv", "label_column_text", "label_column_class"] + \
-                     ["label_" + self.label_text_classes[i] for i in range(len(self.label_text_classes))]
+                     ["label_" + label_text_class for label_text_class in self.label_text_classes]
 
         self.entry = ["entry_column_text", "entry_column_class"] + \
-                     ["entry_" + self.label_text_classes[i] for i in range(len(self.label_text_classes))]
+                     ["entry_" + label_text_class for label_text_class in self.label_text_classes]
 
         self.button_load_csv = customtkinter.CTkButton(master=self.frame_test,
                                                        text="Load CSV",
@@ -110,13 +109,11 @@ class WindowTest(customtkinter.CTk):
                 class_predicted_probability = classifier.model.predict_proba(pd.Series(row[column_text]))
                 df_test.at[index, "ClassPredicted" + classifier.name[15:]] = class_predicted
                 df_test.at[index, "Probability" + classifier.name[15:]] = round(class_predicted_probability[0][np.argmax(class_predicted_probability)], 2)
-                df_test.at[index, "IsCorrectPredict" + classifier.name[15:]] = 1 if str(df_test.at[index, column_class]) not in dict_classes[class_predicted] else 0
-        df_test.to_csv(path_csv[:-4] + "_new" + path_csv[-4:], index=False, mode='w+')
-        accuracy = [classifier.name[15:] + ": " + str((1 - round(sum(df_test["IsCorrectPredict" + classifier.name[15:]])/len(df_test), 4))*100) + "%\n"
+                df_test.at[index, "Correctness" + classifier.name[15:]] = 1 if str(df_test.at[index, column_class]) not in dict_classes[class_predicted] else 0
+        df_test.to_csv(path_csv[:-4] + "_predictions" + path_csv[-4:], index=False, mode='w+')
+        accuracy = [classifier.name[15:] + ": " + "%.2f" % ((1 - round(sum(df_test["IsCorrectPredict" + classifier.name[15:]])/len(df_test), 4))*100) + "%\n"
                     for classifier in self.parentWindow.classifiers]
-        string = 'The operation is concluded\n Accuracy:\n'
-        for acc in accuracy: string = string + acc
-        tkinter.messagebox.showinfo('News Classifier', string)
+        tkinter.messagebox.showinfo('News Classifier', 'The operation is concluded\n Accuracy:\n' + "".join(accuracy))
 
     def on_closing(self):
         """

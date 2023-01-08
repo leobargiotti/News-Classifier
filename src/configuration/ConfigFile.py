@@ -50,7 +50,7 @@ class ConfigFile:
         Method to read all attributes (relative to dataset) of the configuration file
         :return: array
         """
-        return [self.read_attribute(self.config_file_dataset, self.key[index]) for index in range(len(self.key))]
+        return [self.read_attribute(self.config_file_dataset, key) for key in self.key]
 
     def read_attribute(self, section, attribute):
         """

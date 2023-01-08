@@ -29,8 +29,7 @@ class Statistics:
             sns.countplot(x=self.column_target, data=data_original if index == 0 else data_cleaned, ax=axes[index])
             axes[index].set_xticklabels(self.classes_array)
             axes[index].tick_params(axis='x', labelrotation=90)
-            axes[index].set_title(('Before' if index == 0 else 'After') +
-                                  ' removal of tuples with NaN and duplicated values')
+            axes[index].set_title(('Before' if index == 0 else 'After') + ' removal of tuples with NaN and duplicated values')
         plt.show()
 
     def calculate_information(self):
@@ -140,8 +139,8 @@ class Statistics:
         """
         y_predict = self.classifier.model.predict(self.classifier.X_test)
         return classification_report(self.classifier.y_test, y_predict, target_names=self.classes_array) + "\n\n" + \
-               str(f'Final Training Accuracy: {round(self.classifier.model.score(self.classifier.X_train, self.classifier.y_train),2) * 100}%') + "\n" + \
-               str(f'Model Accuracy: {round(self.classifier.model.score(self.classifier.X_test, self.classifier.y_test),2) * 100}%')
+               'Final Training Accuracy: ' + "%.2f" % (self.classifier.model.score(self.classifier.X_train, self.classifier.y_train) * 100) + '%\n' + \
+               'Model Accuracy: ' + "%.2f" % (self.classifier.model.score(self.classifier.X_test, self.classifier.y_test) * 100) + '%'
 
     def confusion_matrix(self, title):
         """

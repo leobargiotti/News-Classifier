@@ -177,19 +177,19 @@ class WindowStatistics(customtkinter.CTk):
         """
         Method to display classification report of classifierTfidfMultinomialNB
         """
-        self.create_toplevel(self.statistic_classifiers[0].calculate_metrics(), "Metrics Configuration 1")
+        self.create_toplevel(self.statistic_classifiers[0].calculate_metrics(), "Classification Report Configuration 1")
 
     def button_event_metrics_2(self):
         """
         Method to display classification report of classifierTfidfLogReg
         """
-        self.create_toplevel(self.statistic_classifiers[1].calculate_metrics(), "Metrics Configuration 2")
+        self.create_toplevel(self.statistic_classifiers[1].calculate_metrics(), "Classification Report Metrics Configuration 2")
 
     def button_event_metrics_3(self):
         """
         Method to display classification report of classifierTfidfSGD
         """
-        self.create_toplevel(self.statistic_classifiers[2].calculate_metrics(), "Metrics Configuration 3")
+        self.create_toplevel(self.statistic_classifiers[2].calculate_metrics(), "Classification Report Metrics Configuration 3")
 
     def button_event_cm1(self):
         """

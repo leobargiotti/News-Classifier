@@ -14,7 +14,7 @@ The process to classify the text has composed by three steps:
 1. Preprocess
    * Text preprocess is a very important phase, that include:
      * Expanding contraction (only for english language)
-     * Removal of stopwords, punctuation, html tags, diacritics, digits and extra whitespaces
+     * Removal of stopwords, punctuation, html tags, urls, diacritics, digits and extra whitespaces
      * Stemming
      * Lemmatization
 2. <a href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html">TfidfVectorizer</a>
@@ -81,10 +81,10 @@ When the application is open the user can write one news into the textbox
 and click on "Classify" button to classify it into the predicted topic.
 
 If the user wants change dataset can select a new dataset and set up some setting 
-(for example the names of the columns relative to text to classify and to true label) clicking on "Configuration
+(for example the names of the columns relative to text to classify and to true label) click on "Configuration
 Settings" button.
 
-Moreover, is possible to view same statistics (clicking on "Statistics" button), 
+Moreover, is possible to view same statistics (click on "Statistics" button), 
 in particular they are on:
 * Dataset:
   * Class Distribution
@@ -98,6 +98,8 @@ in particular they are on:
   * Class Prediction Error
 
 The statistics on classifiers are for each classifier.
+
+With "Test Models" button is possible to test fitted models on a different dataset.
 
 The image below is the home of application:
 
