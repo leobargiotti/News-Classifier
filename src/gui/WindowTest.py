@@ -111,7 +111,7 @@ class WindowTest(customtkinter.CTk):
                 df_test.at[index, "Probability" + classifier.name[15:]] = round(class_predicted_probability[0][np.argmax(class_predicted_probability)], 2)
                 df_test.at[index, "Correctness" + classifier.name[15:]] = 1 if str(df_test.at[index, column_class]) not in dict_classes[class_predicted] else 0
         df_test.to_csv(path_csv[:-4] + "_predictions" + path_csv[-4:], index=False, mode='w+')
-        accuracy = [classifier.name[15:] + ": " + "%.2f" % ((1 - round(sum(df_test["IsCorrectPredict" + classifier.name[15:]])/len(df_test), 4))*100) + "%\n"
+        accuracy = [classifier.name[15:] + ": " + "%.2f" % ((1 - round(sum(df_test["Correctness" + classifier.name[15:]])/len(df_test), 4))*100) + "%\n"
                     for classifier in self.parentWindow.classifiers]
         tkinter.messagebox.showinfo('News Classifier', 'The operation is concluded\n Accuracy:\n' + "".join(accuracy))
 
