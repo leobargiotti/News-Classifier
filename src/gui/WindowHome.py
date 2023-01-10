@@ -10,14 +10,11 @@ customtkinter.set_default_color_theme("dark-blue")  # Themes: "blue", "green", "
 
 
 class WindowHome(customtkinter.CTk):
-    WIDTH = 780
-    HEIGHT = 600
 
     def __init__(self, array_classifiers, array_name_classifiers):
         super().__init__()
 
         self.title("News Classifier")
-        self.geometry(f"{WindowHome.WIDTH}x{WindowHome.HEIGHT}")
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
         self.classifiers = array_classifiers
@@ -112,7 +109,8 @@ class WindowHome(customtkinter.CTk):
             self.label[index].grid(row=index + 1, column=0, pady=15, padx=15, sticky="nwe")
             self.label_output[index] = customtkinter.CTkLabel(master=self.frame_home,
                                                               text="",
-                                                              height=70,
+                                                              width=300,
+                                                              height=80,
                                                               corner_radius=6,
                                                               fg_color=("white", "gray38"),
                                                               justify=tkinter.LEFT)

@@ -8,7 +8,7 @@ from classifier.ClassifierTfidfSGD import ClassifierTfidfSGD
 if __name__ == '__main__':
     """
     Main to open GUI application of News Classifier specifying classifiers and their names
-    Reads preferences from file 'config.ini'
+    Application reads preferences from file 'config.ini'
     """
 
     download_if_non_existent('corpora/stopwords', 'stopwords')
