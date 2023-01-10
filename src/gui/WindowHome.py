@@ -24,6 +24,7 @@ class WindowHome(customtkinter.CTk):
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
         self.classifiers = [ClassifierTfidfMultinomialNB(),  ClassifierTfidfLogReg(), ClassifierTfidfSGD()]
+        self.name_classifiers = ["- MultinomialNB", "- LogisticRegression", "- SGDClassifier"]
 
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(0, weight=1)
@@ -46,7 +47,7 @@ class WindowHome(customtkinter.CTk):
         # configure grid layout (1x11)
         self.label_settings = customtkinter.CTkLabel(master=self.frame_buttons,
                                                      text="News Classifier",
-                                                     font=("Roboto Medium", -16))  # font name and size in px
+                                                     font=("Roboto Medium", -16))
         self.label_settings.grid(row=1, column=0, pady=10, padx=10)
 
         self.button_config = customtkinter.CTkButton(master=self.frame_buttons,
@@ -94,18 +95,16 @@ class WindowHome(customtkinter.CTk):
 
         self.text_input = customtkinter.CTkTextbox(master=self.frame_home,
                                                    height=130,
-                                                   corner_radius=6,  # <- custom corner radius
+                                                   corner_radius=6,
                                                    fg_color=("white", "gray38"))
 
         self.text_input.grid(column=0, row=0, columnspan=2, sticky="nwe", padx=15, pady=15)
 
-        self.label = ["label_classifier_1", "label_classifier_2", "label_classifier_3"]
+        self.label = ["label_classifier_" + str(index + 1) for index in range(len(self.classifiers))]
 
-        self.label_output = ["label_output_1", "label_output_2", "label_output_3"]
+        self.label_output = ["label_output_" + str(index + 1) for index in range(len(self.classifiers))]
 
-        self.text = ["Configuration 1:\n- TfidfVectorizer\n- MultinomialNB",
-                     "Configuration 2:\n- TfidfVectorizer\n- LogisticRegression",
-                     "Configuration 3:\n- TfidfVectorizer\n- SGDClassifier"]
+        self.text = ["Configuration " + str(index + 1) + ":\n- TfidfVectorizer\n" + self.name_classifiers[index] for index in range(len(self.name_classifiers))]
 
         for index in range(len(self.label)):
             self.label[index] = customtkinter.CTkLabel(master=self.frame_home,

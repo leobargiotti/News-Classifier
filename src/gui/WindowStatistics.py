@@ -1,5 +1,6 @@
 import customtkinter
 import tkinter.messagebox
+from functools import partial
 
 from statistic.Statistics import Statistics
 
@@ -13,6 +14,8 @@ class WindowStatistics(customtkinter.CTk):
 
         self.statistic_classifiers = [Statistics(classifier, classifier.config_file) for classifier in
                                       self.parentWindow.classifiers]
+
+        self.number_classifiers = len(self.statistic_classifiers)
 
         self.title("Statistics")
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
@@ -58,24 +61,18 @@ class WindowStatistics(customtkinter.CTk):
             self.text_dataset[0])
         # ============ Button Classifiers ============
 
-        self.button_classifier = ["button_metrics_1", "button_metrics_2", "button_metrics_3",
-                                  "button_cm_1", "button_cm_2", "button_cm_3",
-                                  "button_roc_1", "button_roc_2", "button_roc_3", "button_class_predict_error_1",
-                                  "button_class_predict_error_2", "button_class_predict_error_3"]
+        self.button_classifier = self.print_string_with_number_config("button_metrics_") + \
+                                 self.print_string_with_number_config("button_cm_") + \
+                                 self.print_string_with_number_config("button_roc_") + \
+                                 self.print_string_with_number_config("button_class_predict_error_")
 
-        self.text_classifier = ["Classification Report Config.1", "Classification Report Config.2",
-                                "Classification Report Config.3",
-                                "Confusion Matrix Config. 1", " Confusion Matrix Config. 2",
-                                "Confusion Matrix Config. 3", "AUC Config.1", "AUC Config.2", "AUC Config.3",
-                                "Class Predict. Error Config. 1", "Class Predict. Error Config. 2",
-                                "Class Predict. Error Config. 3"]
+        self.text_classifier = self.print_string_with_number_config("Classification Report Config. ") + \
+                               self.print_string_with_number_config("Confusion Matrix Config. ") + \
+                               self.print_string_with_number_config("AUC Config. ") + \
+                               self.print_string_with_number_config("Class Predict. Error Config. ")
 
-        self.button_event_classifier = [self.button_event_metrics_1, self.button_event_metrics_2,
-                                        self.button_event_metrics_3, self.button_event_cm1, self.button_event_cm2,
-                                        self.button_event_cm3, self.button_event_roc_1, self.button_event_roc_2,
-                                        self.button_event_roc_3, self.button_event_class_predict_error_1,
-                                        self.button_event_class_predict_error_2,
-                                        self.button_event_class_predict_error_3]
+        self.button_event_classifier = [self.button_event_class_report, self.button_event_conf_matrix,
+                                        self.button_event_roc, self.button_event_class_predict_error]
 
         self.label_dataset = customtkinter.CTkLabel(master=self.frame_statistics,
                                                     text="Statistics on Classifiers:",
@@ -87,8 +84,19 @@ class WindowStatistics(customtkinter.CTk):
                                                                     text=self.text_classifier[index],
                                                                     border_width=2,
                                                                     fg_color=None,
-                                                                    command=self.button_event_classifier[index])
-            self.button_classifier[index].grid(row=9 + int(index / 3), column=index % 3, pady=20, padx=20, sticky="we")
+                                                                    command=partial(self.button_event_classifier[
+                                                                                        int(index / self.number_classifiers)],
+                                                                                    index % self.number_classifiers))
+            self.button_classifier[index].grid(row=9 + int(index / self.number_classifiers),
+                                               column=index % self.number_classifiers, pady=20, padx=20, sticky="we")
+
+    def print_string_with_number_config(self, string):
+        """
+        Method to concatenate string to index+1 of statistic_classifiers
+        :param string: string name of statist
+        :return: array concatenate string to index+1
+        """
+        return [string + str(index + 1) for index in range(len(self.statistic_classifiers))]
 
     def create_toplevel(self, metrics, title):
         """
@@ -113,9 +121,11 @@ class WindowStatistics(customtkinter.CTk):
         window.title("Information on Dataset")
         window.frame = customtkinter.CTkFrame(master=window)
         window.frame.grid(row=1, column=2, pady=20, padx=20, sticky="nsew")
-        window.label_1 = customtkinter.CTkLabel(master=window.frame, text=column0, justify=tkinter.LEFT, font=("Courier", 14))
+        window.label_1 = customtkinter.CTkLabel(master=window.frame, text=column0, justify=tkinter.LEFT,
+                                                font=("Courier", 14))
         window.label_1.grid(row=0, column=0, pady=10, padx=10)
-        window.label_1 = customtkinter.CTkLabel(master=window.frame, text=column1, justify=tkinter.LEFT, font=("Courier", 14))
+        window.label_1 = customtkinter.CTkLabel(master=window.frame, text=column1, justify=tkinter.LEFT,
+                                                font=("Courier", 14))
         window.label_1.grid(row=0, column=1, pady=10, padx=10)
 
     # DATASET
@@ -173,77 +183,30 @@ class WindowStatistics(customtkinter.CTk):
 
     # CLASSIFIER
 
-    def button_event_metrics_1(self):
+    def button_event_class_report(self, index):
         """
-        Method to display classification report of classifierTfidfMultinomialNB
+        Method to display classification report of classifier in position of index
         """
-        self.create_toplevel(self.statistic_classifiers[0].calculate_metrics(), "Classification Report Configuration 1")
+        self.create_toplevel(self.statistic_classifiers[index].calculate_class_report(),
+                             "Classification Report Configuration " + str(index + 1))
 
-    def button_event_metrics_2(self):
+    def button_event_conf_matrix(self, index):
         """
-        Method to display classification report of classifierTfidfLogReg
+        Method to display confusion matrix of classifier in position of index
         """
-        self.create_toplevel(self.statistic_classifiers[1].calculate_metrics(), "Classification Report Metrics Configuration 2")
+        self.statistic_classifiers[index].confusion_matrix("Confusion Matrix Config. " + str(index + 1))
 
-    def button_event_metrics_3(self):
+    def button_event_roc(self, index):
         """
-        Method to display classification report of classifierTfidfSGD
+        Method to display area under the curve of classifier in position of index
         """
-        self.create_toplevel(self.statistic_classifiers[2].calculate_metrics(), "Classification Report Metrics Configuration 3")
+        self.statistic_classifiers[index].roc()
 
-    def button_event_cm1(self):
+    def button_event_class_predict_error(self, index):
         """
-        Method to display confusion matrix of classifierTfidfMultinomialNB
+        Method to display class prediction error of classifier in position of index
         """
-        self.statistic_classifiers[0].confusion_matrix("Confusion Matrix Config. 1")
-
-    def button_event_cm2(self):
-        """
-        Method to display confusion matrix of classifierTfidfLogReg
-        """
-        self.statistic_classifiers[1].confusion_matrix("Confusion Matrix Config. 2")
-
-    def button_event_cm3(self):
-        """
-        Method to display confusion matrix of classifierTfidfSGD
-        """
-        self.statistic_classifiers[2].confusion_matrix("Confusion Matrix Config. 3")
-
-    def button_event_roc_1(self):
-        """
-        Method to display area under the curve of classifierTfidfMultinomialNB
-        """
-        self.statistic_classifiers[0].roc()
-
-    def button_event_roc_2(self):
-        """
-        Method to display area under the curve of classifierTfidfLogReg
-        """
-        self.statistic_classifiers[1].roc()
-
-    def button_event_roc_3(self):
-        """
-        Method to display area under the curve of classifierTfidfSGD
-        """
-        self.statistic_classifiers[2].roc()
-
-    def button_event_class_predict_error_1(self):
-        """
-        Method to display class prediction error of classifierTfidfMultinomialNB
-        """
-        self.statistic_classifiers[0].class_prediction_error()
-
-    def button_event_class_predict_error_2(self):
-        """
-        Method to display class prediction error of classifierTfidfLogReg
-        """
-        self.statistic_classifiers[1].class_prediction_error()
-
-    def button_event_class_predict_error_3(self):
-        """
-        Method to display class prediction error of classifierTfidfSGD
-        """
-        self.statistic_classifiers[2].class_prediction_error()
+        self.statistic_classifiers[index].class_prediction_error()
 
     def on_closing(self):
         """

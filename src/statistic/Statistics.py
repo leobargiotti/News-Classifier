@@ -132,7 +132,7 @@ class Statistics:
 
     # ----------CLASSIFIER------------
 
-    def calculate_metrics(self):
+    def calculate_class_report(self):
         """
         Method to compute classification report
         :return: string about classification report, training and test accuracy
