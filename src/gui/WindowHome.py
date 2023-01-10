@@ -4,9 +4,6 @@ import customtkinter
 from .WindowConfiguration import WindowConfiguration
 from .WindowStatistics import WindowStatistics
 from .WindowTest import WindowTest
-from classifier.ClassifierTfidfMultinomialNB import ClassifierTfidfMultinomialNB
-from classifier.ClassifierTfidfLogReg import ClassifierTfidfLogReg
-from classifier.ClassifierTfidfSGD import ClassifierTfidfSGD
 
 customtkinter.set_appearance_mode("System")  # Modes: "System" (standard), "Dark", "Light"
 customtkinter.set_default_color_theme("dark-blue")  # Themes: "blue", "green", "dark-blue"
@@ -16,15 +13,15 @@ class WindowHome(customtkinter.CTk):
     WIDTH = 780
     HEIGHT = 600
 
-    def __init__(self):
+    def __init__(self, array_classifiers, array_name_classifiers):
         super().__init__()
 
         self.title("News Classifier")
         self.geometry(f"{WindowHome.WIDTH}x{WindowHome.HEIGHT}")
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
-        self.classifiers = [ClassifierTfidfMultinomialNB(),  ClassifierTfidfLogReg(), ClassifierTfidfSGD()]
-        self.name_classifiers = ["- MultinomialNB", "- LogisticRegression", "- SGDClassifier"]
+        self.classifiers = array_classifiers
+        self.name_classifiers = array_name_classifiers
 
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(0, weight=1)
