@@ -1,6 +1,7 @@
 import customtkinter
 import tkinter.messagebox
 from tkinter.filedialog import *
+from functools import partial
 
 from configuration.ConfigFile import ConfigFile
 
@@ -34,8 +35,6 @@ class WindowConfiguration(customtkinter.CTk):
 
         self.text_button = ["Load Training CSV", "Load Test CSV"]
 
-        self.command_function = [self.path_train, self.path_test]
-
         self.button_load = ["self.button_train", "self.button_test"]
 
         for index in range(len(self.label_path)):
@@ -55,7 +54,7 @@ class WindowConfiguration(customtkinter.CTk):
                                                               text="Load CSV" if index == 0 and self.switch_var.get() == "on" else self.text_button[index],
                                                               border_width=2,
                                                               fg_color=None,
-                                                              command=self.command_function[index],
+                                                              command=partial(self.load_file, index),
                                                               state="disabled" if index == 1 and self.switch_var.get() == "on" else "normal")
             self.button_load[index].grid(row=index, column=2, columnspan=1, pady=20, padx=20, sticky="we")
 
@@ -98,31 +97,24 @@ class WindowConfiguration(customtkinter.CTk):
         # ============ frame_right ============
         self.button_save = customtkinter.CTkButton(master=self.frame_config,
                                                    text="Save",
-                                                   border_width=2,  # <- custom border_width
-                                                   fg_color=None,  # <- no fg_color
+                                                   border_width=2,
+                                                   fg_color=None,
                                                    command=self.button_event_save)
         self.button_save.grid(row=9, column=1, pady=20, padx=20, sticky="we")
 
         self.button_reset = customtkinter.CTkButton(master=self.frame_config,
                                                     text="Default Configuration",
-                                                    border_width=2,  # <- custom border_width
-                                                    fg_color=None,  # <- no fg_color
+                                                    border_width=2,
+                                                    fg_color=None,
                                                     command=self.button_event_reset)
         self.button_reset.grid(row=9, column=0, pady=20, padx=20, sticky="we")
 
-    def path_train(self):
+    def load_file(self, index):
         """
         Method to load training file
         """
-        self.text_entry[0] = askopenfilenames()[0]
-        self.label_path[0].configure(text=self.text_entry[0])
-
-    def path_test(self):
-        """
-        Method to load test file
-        """
-        self.text_entry[1] = askopenfilenames()[0]
-        self.label_path[1].configure(text=self.text_entry[1])
+        self.text_entry[index] = askopenfilenames()[0]
+        self.label_path[index].configure(text=self.text_entry[index])
 
     def switch_event(self):
         """
