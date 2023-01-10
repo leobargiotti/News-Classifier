@@ -98,7 +98,7 @@ class WindowHome(customtkinter.CTk):
 
         self.label_output = ["label_output_" + str(index + 1) for index in range(len(self.classifiers))]
 
-        self.text = ["Configuration " + str(index + 1) + ":\n- TfidfVectorizer\n" + self.name_classifiers[index] for index in range(len(self.name_classifiers))]
+        self.text = ["Configuration " + str(index + 1) + ":\n- TfidfVectorizer\n- " + self.name_classifiers[index] for index in range(len(self.name_classifiers))]
 
         for index in range(len(self.label)):
             self.label[index] = customtkinter.CTkLabel(master=self.frame_home,
