@@ -1,5 +1,6 @@
-from gui.WindowHome import WindowHome
 import os
+
+from gui.WindowHome import WindowHome
 from utils.utils import download_if_non_existent
 from classifier.ClassifierTfidfMultinomialNB import ClassifierTfidfMultinomialNB
 from classifier.ClassifierTfidfLogReg import ClassifierTfidfLogReg

@@ -27,16 +27,6 @@ class WindowTest(customtkinter.CTk):
         self.frame_test = customtkinter.CTkFrame(master=self)
         self.frame_test.grid(row=7, column=2, pady=20, padx=20, sticky="nsew")
 
-        self.label_text_classes = list(classes for classes in self.parentWindow.classifiers[0].classes.values())
-
-        self.label_text = ["Column Text", "Column Classes"] + self.label_text_classes
-
-        self.label = ["label_csv", "label_column_text", "label_column_class"] + \
-                     ["label_" + label_text_class for label_text_class in self.label_text_classes]
-
-        self.entry = ["entry_column_text", "entry_column_class"] + \
-                     ["entry_" + label_text_class for label_text_class in self.label_text_classes]
-
         self.button_load_csv = customtkinter.CTkButton(master=self.frame_test,
                                                        text="Load CSV",
                                                        border_width=2,
@@ -63,18 +53,24 @@ class WindowTest(customtkinter.CTk):
                                                        height=10)
         self.label_loaded_csv.grid(row=0, column=1, pady=15, padx=15, sticky="nwe")
 
-        for index in range(len(self.entry)):
-            self.label[index] = customtkinter.CTkLabel(master=self.frame_test,
-                                                       text=self.label_text[index],
-                                                       width=10,
-                                                       height=10)
+        self.label_text_classes = list(classes for classes in self.parentWindow.classifiers[0].classes.values())
+
+        self.label_text = ["Column Text", "Column Classes"] + self.label_text_classes
+
+        self.label, self.entry = [], []
+
+        for index in range(len(self.label_text)):
+            self.label.append(customtkinter.CTkLabel(master=self.frame_test,
+                                                     text=self.label_text[index],
+                                                     width=10,
+                                                     height=10))
             self.label[index].grid(row=index + 1, column=0, pady=15, padx=15, sticky="nwe")
-            self.entry[index] = customtkinter.CTkEntry(master=self.frame_test,
-                                                       height=10,
-                                                       corner_radius=6,
-                                                       justify=tkinter.LEFT,
-                                                       placeholder_text="",
-                                                       fg_color=('white', 'gray38'))
+            self.entry.append(customtkinter.CTkEntry(master=self.frame_test,
+                                                     height=10,
+                                                     corner_radius=6,
+                                                     justify=tkinter.LEFT,
+                                                     placeholder_text="",
+                                                     fg_color=('white', 'gray38')))
             self.entry[index].grid(column=1, row=index + 1, sticky="nwe", padx=15, pady=15)
 
     def button_event_load_csv(self):
@@ -108,10 +104,13 @@ class WindowTest(customtkinter.CTk):
                 class_predicted = classifier.print_class(classifier.model.predict(pd.Series(row[column_text]))[0])
                 class_predicted_probability = classifier.model.predict_proba(pd.Series(row[column_text]))
                 df_test.at[index, "ClassPredicted" + classifier.name[15:]] = class_predicted
-                df_test.at[index, "Probability" + classifier.name[15:]] = round(class_predicted_probability[0][np.argmax(class_predicted_probability)], 2)
-                df_test.at[index, "Correctness" + classifier.name[15:]] = 1 if str(df_test.at[index, column_class]) not in dict_classes[class_predicted] else 0
+                df_test.at[index, "Probability" + classifier.name[15:]] = round(
+                    class_predicted_probability[0][np.argmax(class_predicted_probability)], 2)
+                df_test.at[index, "Correctness" + classifier.name[15:]] = 1 if str(
+                    df_test.at[index, column_class]) not in dict_classes[class_predicted] else 0
         df_test.to_csv(path_csv[:-4] + "_predictions" + path_csv[-4:], index=False, mode='w+')
-        accuracy = [classifier.name[15:] + ": " + "%.2f" % ((1 - round(sum(df_test["Correctness" + classifier.name[15:]])/len(df_test), 4))*100) + "%\n"
+        accuracy = [classifier.name[15:] + ": " + "%.2f" % (
+                    (1 - round(sum(df_test["Correctness" + classifier.name[15:]]) / len(df_test), 4)) * 100) + "%\n"
                     for classifier in self.parentWindow.classifiers]
         tkinter.messagebox.showinfo('News Classifier', 'The operation is concluded\n Accuracy:\n' + "".join(accuracy))
 

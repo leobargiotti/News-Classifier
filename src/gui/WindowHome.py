@@ -39,31 +39,23 @@ class WindowHome(customtkinter.CTk):
         self.frame_buttons.grid_rowconfigure(11, minsize=10)
 
         # configure grid layout (1x11)
+
         self.label_settings = customtkinter.CTkLabel(master=self.frame_buttons,
                                                      text="News Classifier",
                                                      font=("Roboto Medium", -16))
         self.label_settings.grid(row=1, column=0, pady=10, padx=10)
 
-        self.button_config = customtkinter.CTkButton(master=self.frame_buttons,
-                                                     text="Configuration Settings",
-                                                     border_width=2,
-                                                     fg_color=None,
-                                                     command=self.button_event_config)
-        self.button_config.grid(row=2, column=0, columnspan=1, pady=20, padx=20, sticky="we")
+        self.button_text = ["Configuration Settings", "Statistics", "Test Models"]
+        self.button_event = [self.button_event_config, self.button_event_statistics, self.button_event_test]
+        self.buttons = []
 
-        self.button_statistics = customtkinter.CTkButton(master=self.frame_buttons,
-                                                         text="Statistics",
-                                                         border_width=2,
-                                                         fg_color=None,
-                                                         command=self.button_event_statistics)
-        self.button_statistics.grid(row=3, column=0, columnspan=1, pady=20, padx=20, sticky="we")
-
-        self.button_statistics = customtkinter.CTkButton(master=self.frame_buttons,
-                                                         text="Test Models",
-                                                         border_width=2,
-                                                         fg_color=None,
-                                                         command=self.button_event_test)
-        self.button_statistics.grid(row=4, column=0, columnspan=1, pady=20, padx=20, sticky="we")
+        for index in range(len(self.button_event)):
+            self.buttons.append(customtkinter.CTkButton(master=self.frame_buttons,
+                                                        text=self.button_text[index],
+                                                        border_width=2,
+                                                        fg_color=None,
+                                                        command=self.button_event[index]))
+            self.buttons[index].grid(row=index + 2, column=0, columnspan=1, pady=20, padx=20, sticky="we")
 
         self.label_appearance = customtkinter.CTkLabel(master=self.frame_buttons, text="Appearance Mode:")
         self.label_appearance.grid(row=9, column=0, pady=0, padx=20, sticky="w")
@@ -94,26 +86,25 @@ class WindowHome(customtkinter.CTk):
 
         self.text_input.grid(column=0, row=0, columnspan=2, sticky="nwe", padx=15, pady=15)
 
-        self.label = ["label_classifier_" + str(index + 1) for index in range(len(self.classifiers))]
+        self.label, self.label_output = [], []
 
-        self.label_output = ["label_output_" + str(index + 1) for index in range(len(self.classifiers))]
+        self.text = ["Configuration " + str(index + 1) + ":\n- TfidfVectorizer\n- " + self.name_classifiers[index] for
+                     index in range(len(self.name_classifiers))]
 
-        self.text = ["Configuration " + str(index + 1) + ":\n- TfidfVectorizer\n- " + self.name_classifiers[index] for index in range(len(self.name_classifiers))]
-
-        for index in range(len(self.label)):
-            self.label[index] = customtkinter.CTkLabel(master=self.frame_home,
-                                                       text=self.text[index],
-                                                       width=10,
-                                                       height=10,
-                                                       justify=tkinter.LEFT)
+        for index in range(len(self.classifiers)):
+            self.label.append(customtkinter.CTkLabel(master=self.frame_home,
+                                                     text=self.text[index],
+                                                     width=10,
+                                                     height=10,
+                                                     justify=tkinter.LEFT))
             self.label[index].grid(row=index + 1, column=0, pady=15, padx=15, sticky="nwe")
-            self.label_output[index] = customtkinter.CTkLabel(master=self.frame_home,
-                                                              text="",
-                                                              width=300,
-                                                              height=80,
-                                                              corner_radius=6,
-                                                              fg_color=("white", "gray38"),
-                                                              justify=tkinter.LEFT)
+            self.label_output.append(customtkinter.CTkLabel(master=self.frame_home,
+                                                            text="",
+                                                            width=300,
+                                                            height=80,
+                                                            corner_radius=6,
+                                                            fg_color=("white", "gray38"),
+                                                            justify=tkinter.LEFT))
             self.label_output[index].grid(row=index + 1, column=1, pady=15, padx=15, sticky="nwe")
 
         # ============ frame_right ============
@@ -135,7 +126,8 @@ class WindowHome(customtkinter.CTk):
         Method to display class prediction and probability of classifiers
         """
         for index in range(len(self.classifiers)):
-            self.label_output[index].configure(text=self.classifiers[index].calculate_class(self.text_input.get("0.0", "end")))
+            self.label_output[index].configure(
+                text=self.classifiers[index].calculate_class(self.text_input.get("0.0", "end")))
 
     def reload_config_classifier(self):
         """
