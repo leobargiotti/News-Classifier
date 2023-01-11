@@ -113,6 +113,7 @@ class WindowHome(customtkinter.CTk):
 
         self.windowConf = None
         self.windowStats = None
+        self.windowTest = None
 
     def button_event_classify(self):
         """
@@ -146,13 +147,13 @@ class WindowHome(customtkinter.CTk):
         """
         Method to open statistics window
         """
-        self.windowStats = WindowTest(self)
-        self.windowStats.mainloop()
+        self.windowTest = WindowTest(self)
+        self.windowTest.mainloop()
 
     @staticmethod
     def change_appearance_mode(new_appearance_mode):
         """
-        Method to open appearance of the application
+        Method to change appearance of the application
         """
         customtkinter.set_appearance_mode(new_appearance_mode)
 
@@ -161,12 +162,7 @@ class WindowHome(customtkinter.CTk):
         Method to close all windows of application
         """
         if tkinter.messagebox.askokcancel("Quit", "Do you want to quit?"):
-            try:
-                self.windowConf.on_closing()
-            except:
-                pass
-            try:
-                self.windowStats.on_closing()
-            except:
-                pass
+            if self.windowConf is not None: self.windowConf.on_closing()
+            if self.windowStats is not None: self.windowStats.on_closing()
+            if self.windowTest is not None: self.windowTest.on_closing()
             self.destroy()
