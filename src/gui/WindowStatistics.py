@@ -20,7 +20,7 @@ class WindowStatistics(customtkinter.CTk):
         self.title("Statistics")
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
-        # ============ frame_info ============
+        # ============ frame_statistics ============
         self.frame_statistics = customtkinter.CTkFrame(master=self)
         self.frame_statistics.grid(row=11, column=2, pady=20, padx=20, sticky="nsew")
 

@@ -36,15 +36,15 @@ class WindowConfiguration(customtkinter.CTk):
 
         for index in range(len(self.text_label_path)):
             self.label_path_0.append(customtkinter.CTkLabel(master=self.frame_config,
-                                                          text=self.text_label_path[index],
-                                                          width=10,
-                                                          height=10))
+                                                            text=self.text_label_path[index],
+                                                            width=10,
+                                                            height=10))
             self.label_path_0[index].grid(row=index, column=0, pady=15, padx=15, sticky="nwe")
 
             self.label_path_1.append(customtkinter.CTkLabel(master=self.frame_config,
-                                                          text=self.text_entry[index],
-                                                          width=10,
-                                                          height=10))
+                                                            text=self.text_entry[index],
+                                                            width=10,
+                                                            height=10))
             self.label_path_1[index].grid(row=index, column=1, pady=15, padx=15, sticky="nwe")
 
             self.button_load.append(customtkinter.CTkButton(master=self.frame_config,
@@ -120,7 +120,7 @@ class WindowConfiguration(customtkinter.CTk):
                                 fg_color=('gray38', 'white') if self.switch_var.get() == "off" else ('white', 'gray38'),
                                 placeholder_text=" " if self.switch_var.get() == "off" else self.text_entry[2])
         self.label_path_1[1].configure(text=self.text_entry[1] if self.switch_var.get() == "off" else "null",
-                                     state="disabled" if self.switch_var.get() == "on" else "normal")
+                                       state="disabled" if self.switch_var.get() == "on" else "normal")
         self.button_load[0].configure(text="Load CSV" if self.switch_var.get() == "on" else self.text_button[0])
         self.button_load[1].configure(state="disabled" if self.switch_var.get() == "on" else "normal")
 
@@ -131,13 +131,10 @@ class WindowConfiguration(customtkinter.CTk):
         modification_config = False
         for index in range(len(self.entry)):
             text_to_check = self.label_path_1[index].cget("text") if index < 2 else self.entry[index - 2].get()
-            if not text_to_check == self.config_file.read_attribute(self.config_file.config_file_dataset,
-                                                                    self.name_config[index]) and text_to_check != "":
-                self.config_file.update_config_file(self.config_file.config_file_dataset, self.name_config[index],
-                                                    text_to_check)
+            if not text_to_check == self.config_file.read_attribute(self.config_file.config_file_dataset, self.name_config[index]) and text_to_check != "":
+                self.config_file.update_config_file(self.config_file.config_file_dataset, self.name_config[index], text_to_check)
                 modification_config = True
-        self.config_file.update_config_file(self.config_file.config_file_config, self.config_file.key_config,
-                                            self.switch_var.get())
+        self.config_file.update_config_file(self.config_file.config_file_config, self.config_file.key_config, self.switch_var.get())
         if modification_config: self.parentWindow.reload_config_classifier()
         self.destroy()
 

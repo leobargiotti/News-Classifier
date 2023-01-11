@@ -38,8 +38,6 @@ class WindowHome(customtkinter.CTk):
         self.frame_buttons.grid_rowconfigure(8, minsize=20)
         self.frame_buttons.grid_rowconfigure(11, minsize=10)
 
-        # configure grid layout (1x11)
-
         self.label_settings = customtkinter.CTkLabel(master=self.frame_buttons,
                                                      text="News Classifier",
                                                      font=("Roboto Medium", -16))
@@ -65,18 +63,13 @@ class WindowHome(customtkinter.CTk):
                                                            command=self.change_appearance_mode)
         self.menu_appearance.grid(row=10, column=0, pady=10, padx=20, sticky="w")
 
-        # ============ frame_right ============
+        # ============ frame_home ============
 
-        # configure grid layout (3x7)
         self.frame_button_classify.rowconfigure(10, weight=10)
         self.frame_button_classify.columnconfigure(0, weight=1)
 
         self.frame_home = customtkinter.CTkFrame(master=self.frame_button_classify)
         self.frame_home.grid(row=0, column=0, columnspan=2, rowspan=4, pady=20, padx=20, sticky="nsew")
-
-        # ============ frame_info ============
-
-        # configure grid layout (1x1)
         self.frame_home.columnconfigure(1, weight=1)
 
         self.text_input = customtkinter.CTkTextbox(master=self.frame_home,
@@ -107,7 +100,7 @@ class WindowHome(customtkinter.CTk):
                                                             justify=tkinter.LEFT))
             self.label_output[index].grid(row=index + 1, column=1, pady=15, padx=15, sticky="nwe")
 
-        # ============ frame_right ============
+        # ============ frame_button_classify ============
         self.button_classify = customtkinter.CTkButton(master=self.frame_button_classify,
                                                        text="Classify",
                                                        border_width=2,
