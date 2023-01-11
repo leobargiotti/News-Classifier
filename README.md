@@ -23,7 +23,7 @@ The process to classify the text has composed by three steps:
    - <a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html">LogisticRegression</a>
    - <a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDClassifier.html">SGDClassifier</a>
    * To find the best parameters of classifiers is used <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html">GridSearchCV</a>
-   * Model of classifiers are saved in [model_saved folder](models_saved), so every time that application restarts doesn't refit models but 
+   * Model of classifiers are saved in [models_saved folder](models_saved), so every time that application restarts doesn't refit models but 
    loads them from the folder. Otherwise, application fits and save models when the dataset changes. 
 
 ## Data
@@ -64,7 +64,7 @@ News Classifier needs the following libraries:
 - <a href="https://tqdm.github.io">Tqdm</a>
 - <a href="https://www.scikit-yb.org/en/latest/">Yellowbrick</a>
 
-[Here](requirements.txt) are present the file with dependencies of the project.
+[Here](requirements.txt) is present the file with all dependencies of the project.
 
 To install all dependencies use:  `pip install -r requirements.txt`
 
