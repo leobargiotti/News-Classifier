@@ -158,4 +158,5 @@ class WindowConfiguration(customtkinter.CTk):
         """
         Method to close window
         """
+        self.parentWindow.windowConf = None
         self.destroy()

@@ -133,22 +133,25 @@ class WindowHome(customtkinter.CTk):
         """
         Method to open configuration window
         """
-        self.windowConf = WindowConfiguration(self)
-        self.windowConf.mainloop()
+        if self.windowConf is None:
+            self.windowConf = WindowConfiguration(self)
+            self.windowConf.mainloop()
 
     def button_event_statistics(self):
         """
         Method to open statistics window
         """
-        self.windowStats = WindowStatistics(self)
-        self.windowStats.mainloop()
+        if self.windowStats is None:
+            self.windowStats = WindowStatistics(self)
+            self.windowStats.mainloop()
 
     def button_event_test(self):
         """
         Method to open statistics window
         """
-        self.windowTest = WindowTest(self)
-        self.windowTest.mainloop()
+        if self.windowTest is None:
+            self.windowTest = WindowTest(self)
+            self.windowTest.mainloop()
 
     @staticmethod
     def change_appearance_mode(new_appearance_mode):
@@ -162,7 +165,10 @@ class WindowHome(customtkinter.CTk):
         Method to close all windows of application
         """
         if tkinter.messagebox.askokcancel("Quit", "Do you want to quit?"):
-            if self.windowConf is not None: self.windowConf.on_closing()
-            if self.windowStats is not None: self.windowStats.on_closing()
-            if self.windowTest is not None: self.windowTest.on_closing()
+            try: self.windowConf.on_closing()
+            except (AttributeError, RuntimeError, Exception): pass
+            try: self.windowStats.on_closing()
+            except (AttributeError, RuntimeError, Exception): pass
+            try: self.windowTest.on_closing()
+            except (AttributeError, RuntimeError, Exception): pass
             self.destroy()

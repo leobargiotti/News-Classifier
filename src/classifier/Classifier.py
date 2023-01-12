@@ -20,14 +20,14 @@ class Classifier:
         self.train_original, self.train_cleaned, self.test_original, self.test_cleaned = remove_duplicates_and_nan_values(self.config_file)
         self.X_train, self.X_test, self.y_train, self.y_test, self.classes = calculate_train_test_classes(
             self.train_cleaned, self.test_cleaned, self.config_file)
-        self.model = self.create_model() if not self.is_present_model() else self.load_model()
+        if not self.is_present_model(): self.create_model()
+        self.model = self.load_model()
 
     def reload_config(self):
         """
         Method to recreate the classifier
         """
-        if Path(self.path_pipeline).is_file():
-            os.remove(self.path_pipeline)
+        if Path(self.path_pipeline).is_file(): os.remove(self.path_pipeline)
         self.__init__()
 
     def save_model(self):
@@ -41,11 +41,7 @@ class Classifier:
         Method to load the classifier
         :return: classifier
         """
-        try:
-            return pickle.load(open(self.path_pipeline, 'rb'))
-        except:
-            print("It is not possible to load the model of " + self.name)
-            return self.create_model()
+        return pickle.load(open(self.path_pipeline, 'rb'))
 
     def is_present_model(self):
         """
@@ -56,8 +52,7 @@ class Classifier:
 
     def create_model(self):
         """
-        Method to fit the classifier
-        :return: classifier fitted
+        Method to fit the classifier with GridSearchCV
         """
         t0 = time.time()
         print("The classifier " + self.name + " is fitting...")
@@ -66,7 +61,6 @@ class Classifier:
               str(self.model[2].best_params_) + ", with a best score of " + str(round(self.model[2].best_score_, 3)) +
               " in " + str(round(time.time() - t0, 3)) + " seconds")
         self.save_model()
-        return self.model
 
     def print_class(self, int_class):
         """

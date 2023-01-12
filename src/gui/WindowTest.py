@@ -5,8 +5,6 @@ import pandas as pd
 import numpy as np
 from tqdm import tqdm
 
-from configuration.ConfigFile import ConfigFile
-
 
 class WindowTest(customtkinter.CTk):
 
@@ -15,15 +13,11 @@ class WindowTest(customtkinter.CTk):
 
         self.parentWindow = parentWindow
 
-        self.config_file = ConfigFile()
-
-        self.title("Configuration Settings")
+        self.title("Test Models")
 
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
-        self.switch_var = customtkinter.StringVar(value=self.config_file.switch_var)
-
-        # ============ frame_config ============
+        # ============ frame_test ============
         self.frame_test = customtkinter.CTkFrame(master=self)
         self.frame_test.grid(row=7, column=2, pady=20, padx=20, sticky="nsew")
 
@@ -104,13 +98,10 @@ class WindowTest(customtkinter.CTk):
                 class_predicted = classifier.print_class(classifier.model.predict(pd.Series(row[column_text]))[0])
                 class_predicted_probability = classifier.model.predict_proba(pd.Series(row[column_text]))
                 df_test.at[index, "ClassPredicted" + classifier.name[15:]] = class_predicted
-                df_test.at[index, "Probability" + classifier.name[15:]] = round(
-                    class_predicted_probability[0][np.argmax(class_predicted_probability)], 2)
-                df_test.at[index, "Correctness" + classifier.name[15:]] = 1 if str(
-                    df_test.at[index, column_class]) not in dict_classes[class_predicted] else 0
+                df_test.at[index, "Probability" + classifier.name[15:]] = round(class_predicted_probability[0][np.argmax(class_predicted_probability)], 2)
+                df_test.at[index, "Correctness" + classifier.name[15:]] = 1 if str(df_test.at[index, column_class]) not in dict_classes[class_predicted] else 0
         df_test.to_csv(path_csv[:-4] + "_predictions" + path_csv[-4:], index=False, mode='w+')
-        accuracy = [classifier.name[15:] + ": " + "%.2f" % (
-                    (1 - round(sum(df_test["Correctness" + classifier.name[15:]]) / len(df_test), 4)) * 100) + "%\n"
+        accuracy = [classifier.name[15:] + ": " + "%.2f" % ((1 - round(sum(df_test["Correctness" + classifier.name[15:]]) / len(df_test), 4)) * 100) + "%\n"
                     for classifier in self.parentWindow.classifiers]
         tkinter.messagebox.showinfo('News Classifier', 'The operation is concluded\n Accuracy:\n' + "".join(accuracy))
 
@@ -118,4 +109,5 @@ class WindowTest(customtkinter.CTk):
         """
         Method to close window
         """
+        self.parentWindow.windowTest = None
         self.destroy()
