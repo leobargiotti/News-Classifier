@@ -73,33 +73,34 @@ To install all dependencies use:  `pip install -r requirements.txt`
 In [the src folder](src) of this repo, there is code of the application to run locally on your own computer.
 In your terminal while in this repo directory, run the following commands to use application:
 
->`cd ./src` 
+>`cd src` 
 > 
 > `python main.py`
 
-When the application is open the user can write one news into the textbox 
-and click on "Classify" button to classify it into the predicted topic.
+or
+> `python src/main.py`
 
-If the user wants change dataset can select a new dataset and set up some setting 
-(for example the names of the columns relative to text to classify and to true label) click on "Configuration
-Settings" button.
+In [the file main](/src/main.py) is possible to set which classifiers you want use.
 
-Moreover, is possible to view same statistics (click on "Statistics" button), 
-in particular they are on:
-* Dataset:
-  * Class Distribution
-  * Wordcloud of training and test set
-  * Most frequent words on training and test set
-  * General Information on dataset
-* Classifiers:
-  * Metrics
-  * Confusion Matrix
-  * Area Under the Curve
-  * Class Prediction Error
-
-The statistics on classifiers are for each classifier.
-
-With "Test Models" button is possible to test fitted models on a different dataset.
+this application has these following buttons:
+* Classify
+  * Calculates predicted class and its probability of the news written in textbox for each classifier.
+* Configuration Settings
+  * Allows to change dataset setting up some setting (for example the names of the columns relative to text to classify and to true label)
+* Statistics
+  * Displays statistics on:
+    * Dataset:
+      * Class Distribution
+      * Wordcloud of training and test set
+      * Most frequent words on training and test set
+      * General Information on dataset
+    * Classifiers (They are for each one):
+      * Metrics
+      * Confusion Matrix
+      * Area Under the Curve
+      * Class Prediction Error
+* Test Models
+  * Tests fitted models on a different dataset
 
 The image below is the home of application:
 

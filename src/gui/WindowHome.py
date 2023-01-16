@@ -32,16 +32,13 @@ class WindowHome(customtkinter.CTk):
         self.frame_button_classify.grid(row=0, column=1, sticky="nswe", padx=20, pady=20)
 
         # ============ frame_buttons ============
-
-        self.frame_buttons.grid_rowconfigure(0, minsize=10)
         self.frame_buttons.grid_rowconfigure(5, weight=1)
-        self.frame_buttons.grid_rowconfigure(8, minsize=20)
-        self.frame_buttons.grid_rowconfigure(11, minsize=10)
+        self.frame_buttons.grid_rowconfigure(11, minsize=25)
 
         self.label_settings = customtkinter.CTkLabel(master=self.frame_buttons,
                                                      text="News Classifier",
                                                      font=("Roboto Medium", -16))
-        self.label_settings.grid(row=1, column=0, pady=10, padx=10)
+        self.label_settings.grid(row=0, column=0, pady=10, padx=10)
 
         self.button_text = ["Configuration Settings", "Statistics", "Test Models"]
         self.button_event = [self.button_event_config, self.button_event_statistics, self.button_event_test]
@@ -53,17 +50,17 @@ class WindowHome(customtkinter.CTk):
                                                         border_width=2,
                                                         fg_color=None,
                                                         command=self.button_event[index]))
-            self.buttons[index].grid(row=index + 2, column=0, columnspan=1, pady=20, padx=20, sticky="we")
+            self.buttons[index].grid(row=index + 1, column=0, columnspan=1, pady=20, padx=20, sticky="we")
 
         self.label_appearance = customtkinter.CTkLabel(master=self.frame_buttons, text="Appearance Mode:")
-        self.label_appearance.grid(row=9, column=0, pady=0, padx=20, sticky="w")
+        self.label_appearance.grid(row=8, column=0, pady=0, padx=20, sticky="w")
 
         self.menu_appearance = customtkinter.CTkOptionMenu(master=self.frame_buttons,
                                                            values=["Light", "Dark", "System"],
                                                            command=self.change_appearance_mode)
-        self.menu_appearance.grid(row=10, column=0, pady=10, padx=20, sticky="w")
+        self.menu_appearance.grid(row=9, column=0, pady=10, padx=20, sticky="w")
 
-        # ============ frame_home ============
+        # ============ frame_button_classify ============
 
         self.frame_button_classify.rowconfigure(10, weight=10)
         self.frame_button_classify.columnconfigure(0, weight=1)
@@ -71,6 +68,8 @@ class WindowHome(customtkinter.CTk):
         self.frame_home = customtkinter.CTkFrame(master=self.frame_button_classify)
         self.frame_home.grid(row=0, column=0, columnspan=2, rowspan=4, pady=20, padx=20, sticky="nsew")
         self.frame_home.columnconfigure(1, weight=1)
+
+        # ============ frame_button_classify ============
 
         self.text_input = customtkinter.CTkTextbox(master=self.frame_home,
                                                    height=130,
