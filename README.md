@@ -82,7 +82,7 @@ or
 
 In [the file main](/src/main.py) is possible to set which classifiers you want use.
 
-this application has these following buttons:
+This application has these following buttons:
 * Classify
   * Calculates predicted class and its probability of the news written in textbox for each classifier.
 * Configuration Settings
