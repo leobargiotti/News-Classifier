@@ -95,7 +95,7 @@ This application has these following buttons:
       * Most frequent words on training and test set
       * General Information on dataset
     * Classifiers (They are for each one):
-      * Metrics
+      * Classification Report
       * Confusion Matrix
       * Area Under the Curve
       * Class Prediction Error
