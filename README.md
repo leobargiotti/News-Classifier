@@ -94,7 +94,7 @@ This application has these following buttons:
       * Wordcloud of training and test set
       * Most frequent words on training and test set
       * General Information on dataset
-    * Classifiers (They are for each one):
+    * Classifiers (for each one):
       * Classification Report
       * Confusion Matrix
       * ROC Curve
