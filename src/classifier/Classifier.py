@@ -72,7 +72,7 @@ class Classifier:
 
     def create_pipeline(self):
         """
-        Method to instance Pipeline without classifier
+        Method to instance Pipeline without classifier (GridSearchCV)
         :return: Pipeline with TextPreprocessor and TfidfVectorizer
         """
         return Pipeline([

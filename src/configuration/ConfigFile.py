@@ -15,9 +15,7 @@ class ConfigFile:
                     "class_string", "int_classes", "name_classes"]
         self.default_values = ["../dataset/AG News/train.csv", "../dataset/AG News/test.csv", "0.3", 'Description',
                                'Class Index', "english", "False", "1, 2, 3, 4", "World, Sports, Business, Sci/Tech"]
-        if not self.is_present_config_file():
-            self.create_default_config_file()
-        self.dictionary = self.create_dictionary_config_file([self.read_config_file()[i] for i in range(len(self.key))])
+        if not self.is_present_config_file(): self.create_default_config_file()
         self.path_training, self.path_test, self.test_size, self.column_text, self.column_target, self.language, self. \
             class_string, self.int_classes, self.name_classes = self.read_config_file()
         self.switch_var = self.read_attribute(self.config_file_config, self.key_config)
@@ -66,8 +64,7 @@ class ConfigFile:
         """
         Method to write configuration file
         """
-        with open(self.config_file, 'w') as conf:
-            self.config_object.write(conf)
+        self.config_object.write(open(self.config_file, 'w'))
 
     def update_config_file(self, section, attribute, new_value):
         """

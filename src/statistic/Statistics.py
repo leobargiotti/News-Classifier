@@ -11,10 +11,9 @@ class Statistics:
 
     def __init__(self, classifier, configFile):
         self.classifier = classifier
-        self.classes_array = [self.classifier.classes.get(key) for key in self.classifier.classes]
-        self.config_file = configFile
-        self.column_text = self.config_file.column_text
-        self.column_target = self.config_file.column_target
+        self.classes_array = list(self.classifier.classes.values())
+        self.column_text = configFile.column_text
+        self.column_target = configFile.column_target
 
     # ---------DATASET---------
 
@@ -171,6 +170,6 @@ class Statistics:
         visualizer = ClassPredictionError(self.classifier.model, is_fitted=True)
         visualizer.name = self.classifier.name
         visualizer.class_counts_ = np.unique(self.classifier.y_train, return_counts=True)[1]
-        visualizer.classes_ = list(self.classifier.classes.values())
+        visualizer.classes_ = self.classes_array
         visualizer.score(self.classifier.X_test, self.classifier.y_test)
         visualizer.show()
