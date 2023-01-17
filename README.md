@@ -97,7 +97,7 @@ This application has these following buttons:
     * Classifiers (They are for each one):
       * Classification Report
       * Confusion Matrix
-      * Area Under the Curve
+      * ROC Curve
       * Class Prediction Error
 * Test Models
   * Tests fitted models on a different dataset

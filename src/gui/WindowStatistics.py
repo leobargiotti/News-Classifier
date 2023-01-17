@@ -64,7 +64,7 @@ class WindowStatistics(customtkinter.CTk):
 
         self.text_classifier = self.print_string_with_number_config("Classification Report Config. ") + \
                                self.print_string_with_number_config("Confusion Matrix Config. ") + \
-                               self.print_string_with_number_config("AUC Config. ") + \
+                               self.print_string_with_number_config("ROC Curve Config. ") + \
                                self.print_string_with_number_config("Class Predict. Error Config. ")
 
         self.button_event_classifier = [self.button_event_class_report, self.button_event_conf_matrix,
@@ -76,15 +76,14 @@ class WindowStatistics(customtkinter.CTk):
         self.label_dataset.grid(row=8, column=0, pady=10, padx=10)
 
         for index in range(len(self.text_classifier)):
+            n_row = int(index / self.number_classifiers)
+            n_column = index % self.number_classifiers
             self.button_classifier.append(customtkinter.CTkButton(master=self.frame_statistics,
                                                                   text=self.text_classifier[index],
                                                                   border_width=2,
                                                                   fg_color=None,
-                                                                  command=partial(self.button_event_classifier[
-                                                                                      int(index / self.number_classifiers)],
-                                                                                  index % self.number_classifiers)))
-            self.button_classifier[index].grid(row=9 + int(index / self.number_classifiers),
-                                               column=index % self.number_classifiers, pady=20, padx=20, sticky="we")
+                                                                  command=partial(self.button_event_classifier[n_row], n_column)))
+            self.button_classifier[index].grid(row=9 + n_row, column=n_column, pady=20, padx=20, sticky="we")
 
     def print_string_with_number_config(self, string):
         """
@@ -117,11 +116,9 @@ class WindowStatistics(customtkinter.CTk):
         window.title("Information on Dataset")
         window.frame = customtkinter.CTkFrame(master=window)
         window.frame.grid(row=1, column=2, pady=20, padx=20, sticky="nsew")
-        window.label_1 = customtkinter.CTkLabel(master=window.frame, text=column0, justify=tkinter.LEFT,
-                                                font=("Courier", 14))
+        window.label_1 = customtkinter.CTkLabel(master=window.frame, text=column0, justify=tkinter.LEFT, font=("Courier", 14))
         window.label_1.grid(row=0, column=0, pady=10, padx=10)
-        window.label_1 = customtkinter.CTkLabel(master=window.frame, text=column1, justify=tkinter.LEFT,
-                                                font=("Courier", 14))
+        window.label_1 = customtkinter.CTkLabel(master=window.frame, text=column1, justify=tkinter.LEFT, font=("Courier", 14))
         window.label_1.grid(row=0, column=1, pady=10, padx=10)
 
     # DATASET
@@ -183,7 +180,7 @@ class WindowStatistics(customtkinter.CTk):
 
     def button_event_roc(self, index):
         """
-        Method to display area under the curve of classifier in position of index
+        Method to display ROC curve of classifier in position of index
         :param index: integer value of index corresponding to the classifier
         """
         self.statistic_classifiers[index].roc()

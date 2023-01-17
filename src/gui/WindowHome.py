@@ -69,7 +69,7 @@ class WindowHome(customtkinter.CTk):
         self.frame_home.grid(row=0, column=0, columnspan=2, rowspan=4, pady=20, padx=20, sticky="nsew")
         self.frame_home.columnconfigure(1, weight=1)
 
-        # ============ frame_button_classify ============
+        # ============ frame_home ============
 
         self.text_input = customtkinter.CTkTextbox(master=self.frame_home,
                                                    height=130,
@@ -110,9 +110,7 @@ class WindowHome(customtkinter.CTk):
         # set default values
         self.menu_appearance.set("System")
 
-        self.windowConf = None
-        self.windowStats = None
-        self.windowTest = None
+        self.windowConf, self.windowStats, self.windowTest = None, None, None
 
     def button_event_classify(self):
         """

@@ -156,7 +156,7 @@ class Statistics:
 
     def roc(self):
         """
-        Method to display area under the curve
+        Method to display ROC curve
         """
         visualizer = roc_auc(self.classifier.model, self.classifier.X_train, self.classifier.y_train, is_fitted=True,
                              X_test=self.classifier.X_test, y_test=self.classifier.y_test,
@@ -168,7 +168,9 @@ class Statistics:
         """
         Method to display class prediction error
         """
-        visualizer = ClassPredictionError(self.classifier.model, encoder=self.classifier.classes, is_fitted=True)
+        visualizer = ClassPredictionError(self.classifier.model, is_fitted=True)
         visualizer.name = self.classifier.name
+        visualizer.class_counts_ = np.unique(self.classifier.y_train, return_counts=True)[1]
+        visualizer.classes_ = list(self.classifier.classes.values())
         visualizer.score(self.classifier.X_test, self.classifier.y_test)
         visualizer.show()

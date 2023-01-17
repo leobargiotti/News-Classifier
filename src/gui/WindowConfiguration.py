@@ -85,8 +85,8 @@ class WindowConfiguration(customtkinter.CTk):
                                                      placeholder_text="" if index == 0 and self.switch_var.get() == "off" else
                                                      self.text_entry[index + 2],
                                                      fg_color=('gray38', 'white')
-                                                     if index == 0 and self.switch_var.get() == "off" else (
-                                                         'white', 'gray38'),
+                                                     if index == 0 and self.switch_var.get() == "off" else
+                                                     ('white', 'gray38'),
                                                      state="disabled" if index == 0 and self.switch_var.get() == "off" else "normal"))
             self.entry[index].grid(column=1, row=index + 2, sticky="nwe", padx=15, pady=15)
 
@@ -146,10 +146,8 @@ class WindowConfiguration(customtkinter.CTk):
         self.config_file.dictionary = self.config_file.create_dictionary_config_file(self.config_file.default_values)
         self.text_entry = [self.config_file.dictionary[key] for key in self.config_file.dictionary]
         for index in range(len(self.text_entry)):
-            if index > 1:
-                self.entry[index - 2].configure(placeholder_text=self.text_entry[index])
-            else:
-                self.label_path_1[index].configure(text=self.text_entry[index])
+            if index > 1: self.entry[index - 2].configure(placeholder_text=self.text_entry[index])
+            else: self.label_path_1[index].configure(text=self.text_entry[index])
         self.switch_var.set(self.config_file.switch_var_default)
         self.switch_event()
         self.parentWindow.reload_config_classifier()
