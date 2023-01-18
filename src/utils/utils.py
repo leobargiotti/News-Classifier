@@ -85,7 +85,7 @@ def remove_duplicates_and_nan_values(config_file):
     :return: list containing train-test dataframe without duplicates and Nan values
     """
     path_train, path_test, column_text, column_target = config_file.path_training, config_file.path_test, \
-                                                         config_file.column_text, config_file.column_target
+        config_file.column_text, config_file.column_target
     train_original = pd.read_csv(path_train)
     train_cleaned = drop_duplicates_and_nan(train_original, column_text, column_target)
     if not str(path_test).lower() == "null":
