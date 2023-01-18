@@ -16,9 +16,6 @@ class ClassifierTfidfLogReg(Classifier):
         Method to instance Pipeline with classifier
         :return: Pipeline with TextPreprocessor, TfidfVectorizer and LogisticRegression
         """
-
-        print(self.config_file.hide_warning_log_reg)
-
         if self.config_file.hide_warning_log_reg:
             simplefilter(action='ignore', category=UserWarning)
             simplefilter(action="ignore", category=RuntimeWarning)
