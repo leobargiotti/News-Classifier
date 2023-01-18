@@ -20,7 +20,7 @@ class Classifier:
         self.train_original, self.train_cleaned, self.test_original, self.test_cleaned = remove_duplicates_and_nan_values(self.config_file)
         self.X_train, self.X_test, self.y_train, self.y_test, self.classes = calculate_train_test_classes(
             self.train_cleaned, self.test_cleaned, self.config_file)
-        if not self.is_present_model(): self.create_model()
+        if not self.is_present_model(): self.fit_model()
         self.model = self.load_model()
 
     def reload_config(self):
@@ -50,13 +50,13 @@ class Classifier:
         """
         return True if Path(self.path_pipeline).is_file() else False
 
-    def create_model(self):
+    def fit_model(self):
         """
         Method to fit the classifier with GridSearchCV
         """
         t0 = time.time()
         print("The classifier " + self.name + " is fitting...")
-        self.model = self.create_pipeline().fit(self.X_train, self.y_train.values.ravel())
+        self.model = self.build_pipeline().fit(self.X_train, self.y_train.values.ravel())
         print("The classifier " + self.name + " is created with this parameters: " +
               str(self.model[2].best_params_) + ", with a best score of " + str(round(self.model[2].best_score_, 3)) +
               " in " + str(round(time.time() - t0, 3)) + " seconds")
@@ -70,7 +70,7 @@ class Classifier:
         """
         return self.classes.get(int_class)
 
-    def create_pipeline(self):
+    def build_pipeline(self):
         """
         Method to instance Pipeline without classifier (GridSearchCV)
         :return: Pipeline with TextPreprocessor and TfidfVectorizer

@@ -25,7 +25,7 @@ class WindowConfiguration(customtkinter.CTk):
         self.frame_config = customtkinter.CTkFrame(master=self)
         self.frame_config.grid(row=7, column=2, pady=20, padx=20, sticky="nsew")
 
-        self.text_entry = [self.config_file.dictionary[key] for key in self.config_file.dictionary]
+        self.text_entry = self.config_file.read_all_attributes_section(self.config_file.config_dataset, self.config_file.keys_dataset)
 
         # First 2 rows
         self.text_label_path = ["Path Training Set", "Path Test Set"]
@@ -63,8 +63,6 @@ class WindowConfiguration(customtkinter.CTk):
         switch_test.grid(row=2, column=2, pady=10, padx=10)
 
         # Other rows
-
-        self.name_config = [key for key in self.config_file.dictionary]
 
         self.text_label = ["Test/Training size", "Column Text", "Column Target",
                            "Language", "Class Target is a String", "Integer number \n of each class",
@@ -131,23 +129,21 @@ class WindowConfiguration(customtkinter.CTk):
         modification_config = False
         for index in range(len(self.entry)):
             text_to_check = self.label_path_1[index].cget("text") if index < 2 else self.entry[index - 2].get()
-            if not text_to_check == self.config_file.read_attribute(self.config_file.config_file_dataset, self.name_config[index]) and text_to_check != "":
-                self.config_file.update_config_file(self.config_file.config_file_dataset, self.name_config[index], text_to_check)
+            if not text_to_check == self.config_file.read_attribute(self.config_file.config_dataset, self.config_file.keys_dataset[index]) and text_to_check != "":
+                self.config_file.update_config_file(self.config_file.config_dataset, self.config_file.keys_dataset[index], text_to_check)
                 modification_config = True
-        self.config_file.update_config_file(self.config_file.config_file_config, self.config_file.key_config, self.switch_var.get())
+        self.config_file.update_config_file(self.config_file.config_configuration, self.config_file.key_switch_var, self.switch_var.get())
         if modification_config: self.parentWindow.reload_config_classifier()
-        self.destroy()
+        self.on_closing()
 
     def button_event_reset(self):
         """
         Method to write default configuration
         """
         self.config_file.create_default_config_file()
-        self.config_file.dictionary = self.config_file.create_dictionary_config_file(self.config_file.default_values)
-        self.text_entry = [self.config_file.dictionary[key] for key in self.config_file.dictionary]
         for index in range(len(self.text_entry)):
-            if index > 1: self.entry[index - 2].configure(placeholder_text=self.text_entry[index])
-            else: self.label_path_1[index].configure(text=self.text_entry[index])
+            if index > 1: self.entry[index - 2].configure(placeholder_text=self.config_file.dataset_default[index])
+            else: self.label_path_1[index].configure(text=self.config_file.dataset_default[index])
         self.switch_var.set(self.config_file.switch_var_default)
         self.switch_event()
         self.parentWindow.reload_config_classifier()

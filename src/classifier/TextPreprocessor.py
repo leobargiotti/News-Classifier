@@ -18,8 +18,7 @@ class PreprocessingSteps:
         Method to expand english contractions
         :return: itself (PreprocessingSteps)
         """
-        if self.language == "english":
-            self.X = self.X.apply(lambda x: contractions.fix(x))
+        if self.language == "english": self.X = self.X.apply(lambda x: contractions.fix(x))
         return self
 
     def clean_text(self):

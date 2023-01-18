@@ -5,6 +5,8 @@ import pandas as pd
 import numpy as np
 from tqdm import tqdm
 
+from utils.utils import create_dictionary
+
 
 class WindowTest(customtkinter.CTk):
 
@@ -75,23 +77,15 @@ class WindowTest(customtkinter.CTk):
 
     def button_event_classify(self):
         """
-        Method to launch classification
-        """
-        self.classify(self.label_loaded_csv.cget("text"),
-                      self.entry[0].get(), self.entry[1].get(),
-                      dict(zip(self.label_text_classes, [i.get() for i in self.entry[2:]])))
-
-    def classify(self, path_csv, column_text, column_class, dict_classes):
-        """
         Method to compute classification of csv in input creating new file containing the same columns
         of file in input and other three for each classifier:class predicted, its probability and
         boolean value (0 or 1) if the class predicted is or isn't the same of the right class
         When te classification is finished it opens a pop-up window and displays accuracy of each classifier
-        :param path_csv: string containing path of csv file
-        :param column_text: string column name containing text
-        :param column_class: string column name containing classes
-        :param dict_classes: dictionary of relationship between classes of classifier and csv file
         """
+        path_csv = self.label_loaded_csv.cget("text")
+        column_text = self.entry[0].get()
+        column_class = self.entry[1].get()
+        dict_classes = create_dictionary(self.label_text_classes, [i.get() for i in self.entry[2:]])
         df_test = pd.read_csv(path_csv)
         for index, row in tqdm(df_test.iterrows(), total=len(df_test), desc="Processing Rows"):
             for classifier in self.parentWindow.classifiers:

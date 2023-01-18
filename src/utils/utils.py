@@ -52,10 +52,8 @@ def encode_label_classes(y_train, y_test):
     :return: list containing train-test encoded and dictionary of the classes
     """
     le = LabelEncoder()
-    y_train_new = pd.Series(le.fit_transform(y_train))
-    y_test_new = pd.Series(le.fit_transform(y_test))
-    classes = dict(zip(range(len(le.classes_)), le.classes_))
-    return y_train_new, y_test_new, classes
+    return pd.Series(le.fit_transform(y_train)), pd.Series(le.fit_transform(y_test)), \
+        create_dictionary(range(len(le.classes_)), le.classes_)
 
 
 def create_dictionary_classes(int_classes, name_classes):
@@ -65,11 +63,17 @@ def create_dictionary_classes(int_classes, name_classes):
     :param name_classes: list of strings value of classes
     :return: dictionary that associates integer to string value of classes
     """
-    name_class = name_classes.split(",")
-    name_class = [name_class[x].strip() for x in range(len(name_class))]
-    int_class = int_classes.split(",")
-    int_class = [int(int_class[x]) for x in range(len(int_class))]
-    return dict(zip(int_class, name_class))
+    return create_dictionary([int(x) for x in int_classes.split(",")], [x.strip() for x in name_classes.split(",")])
+
+
+def create_dictionary(keys, values):
+    """
+    Method compute dictionary
+    :param keys: array to of keys
+    :param values: array to associate value at each key
+    :return: dictionary
+    """
+    return dict(zip(keys, values))
 
 
 def drop_duplicates_and_nan(data, column_text, column_target):
@@ -80,9 +84,7 @@ def drop_duplicates_and_nan(data, column_text, column_target):
     :param column_target: string of column name that contains classes
     :return: dataframe without duplicates and Nan values
     """
-    data = data.drop_duplicates(subset=[column_text, column_target])
-    data = data.dropna()
-    return data
+    return data.drop_duplicates(subset=[column_text, column_target]).dropna()
 
 
 def remove_duplicates_and_nan_values(config_file):

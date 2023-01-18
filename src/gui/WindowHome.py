@@ -5,7 +5,7 @@ from .WindowConfiguration import WindowConfiguration
 from .WindowStatistics import WindowStatistics
 from .WindowTest import WindowTest
 
-customtkinter.set_appearance_mode("System")  # Modes: "System" (standard), "Dark", "Light"
+customtkinter.set_appearance_mode("System")
 customtkinter.set_default_color_theme("dark-blue")  # Themes: "blue", "green", "dark-blue"
 
 
@@ -117,8 +117,7 @@ class WindowHome(customtkinter.CTk):
         Method to display class prediction and probability of classifiers
         """
         for index in range(len(self.classifiers)):
-            self.label_output[index].configure(
-                text=self.classifiers[index].calculate_class(self.text_input.get("0.0", "end")))
+            self.label_output[index].configure(text=self.classifiers[index].calculate_class(self.text_input.get("0.0", "end")))
 
     def reload_config_classifier(self):
         """
