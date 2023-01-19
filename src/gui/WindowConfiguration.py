@@ -42,7 +42,7 @@ class WindowConfiguration(customtkinter.CTk):
             self.label_path_0[index].grid(row=index, column=0, pady=15, padx=15, sticky="nwe")
 
             self.label_path_1.append(customtkinter.CTkLabel(master=self.frame_config,
-                                                            text=self.text_entry[index],
+                                                            text="null" if self.text_entry[index] is None else self.text_entry[index],
                                                             width=10,
                                                             height=10))
             self.label_path_1[index].grid(row=index, column=1, pady=15, padx=15, sticky="nwe")
@@ -81,7 +81,7 @@ class WindowConfiguration(customtkinter.CTk):
                                                      corner_radius=6,
                                                      justify=tkinter.LEFT,
                                                      placeholder_text="" if index == 0 and self.switch_var.get() == "off" else
-                                                     self.text_entry[index + 2],
+                                                     str(self.text_entry[index + 2]),
                                                      fg_color=('gray38', 'white')
                                                      if index == 0 and self.switch_var.get() == "off" else
                                                      ('white', 'gray38'),

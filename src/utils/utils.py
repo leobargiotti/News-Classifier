@@ -87,7 +87,7 @@ def remove_duplicates_and_nan_values(config_file):
         config_file.column_text, config_file.column_target
     train_original = pd.read_csv(path_train)
     train_cleaned = drop_duplicates_and_nan(train_original, column_text, column_target)
-    if not path_test.lower() == "null":
+    if path_test is not None:
         test_original = pd.read_csv(path_test)
         test_cleaned = drop_duplicates_and_nan(test_original, column_text, column_target)
         return train_original, train_cleaned, test_original, test_cleaned
