@@ -2,7 +2,7 @@ from configparser import ConfigParser
 from pathlib import Path
 import json
 
-from utils.utils import create_dictionary
+from utils.utils import create_dictionary, safe_execute
 
 
 class ConfigFile:
@@ -25,8 +25,7 @@ class ConfigFile:
         self.path_training, self.path_test, self.test_size, self.column_text, self.column_target, self.language, \
             self.class_string, self.int_classes, self.name_classes = self.read_all_attributes_section(self.config_dataset, self.keys_dataset)
         self.switch_var = self.read_attribute(self.config_configuration, self.key_switch_var)
-        self.debug_classifier, self.hide_warning_log_reg = [json.loads(attribute.lower()) for attribute in
-                                                            self.read_all_attributes_section(self.config_debug, self.keys_debug)]
+        self.debug_classifier, self.hide_warning_log_reg = self.read_all_attributes_section(self.config_debug, self.keys_debug)
 
     def create_default_config_file(self):
         """
@@ -51,7 +50,8 @@ class ConfigFile:
         :param attributes: Array of the attributes of the section
         :return: array
         """
-        return [self.read_attribute(section, attribute) for attribute in attributes]
+        return [safe_execute(self.read_attribute(section, attribute), json.decoder.JSONDecodeError, json.loads,
+                                  self.read_attribute(section, attribute).lower()) for attribute in attributes]
 
     def read_attribute(self, section, attribute):
         """

@@ -103,5 +103,5 @@ class WindowTest(customtkinter.CTk):
         """
         Method to close window
         """
-        self.parentWindow.windowTest = None
+        self.parentWindow.windows[2] = None
         self.destroy()

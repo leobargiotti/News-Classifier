@@ -196,5 +196,5 @@ class WindowStatistics(customtkinter.CTk):
         """
         Method to close window
         """
-        self.parentWindow.windowStats = None
+        self.parentWindow.windows[1] = None
         self.destroy()

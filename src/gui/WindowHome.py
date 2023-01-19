@@ -1,5 +1,6 @@
 import tkinter.messagebox
 import customtkinter
+from functools import partial
 
 from .WindowConfiguration import WindowConfiguration
 from .WindowStatistics import WindowStatistics
@@ -41,7 +42,7 @@ class WindowHome(customtkinter.CTk):
         self.label_settings.grid(row=0, column=0, pady=10, padx=10)
 
         self.button_text = ["Configuration Settings", "Statistics", "Test Models"]
-        self.button_event = [self.button_event_config, self.button_event_statistics, self.button_event_test]
+        self.button_event = [partial(self.button_event, 0), partial(self.button_event, 1), partial(self.button_event, 2)]
         self.buttons = []
 
         for index in range(len(self.button_event)):
@@ -110,7 +111,7 @@ class WindowHome(customtkinter.CTk):
         # set default values
         self.menu_appearance.set("System")
 
-        self.windowConf, self.windowStats, self.windowTest = None, None, None
+        self.windows = [None, None, None]
 
     def button_event_classify(self):
         """
@@ -125,29 +126,14 @@ class WindowHome(customtkinter.CTk):
         """
         for classifier in self.classifiers: classifier.reload_config()
 
-    def button_event_config(self):
+    def button_event(self, index):
         """
         Method to open configuration window
+        :param index: integer value of index corresponding to the window
         """
-        if self.windowConf is None:
-            self.windowConf = WindowConfiguration(self)
-            self.windowConf.mainloop()
-
-    def button_event_statistics(self):
-        """
-        Method to open statistics window
-        """
-        if self.windowStats is None:
-            self.windowStats = WindowStatistics(self)
-            self.windowStats.mainloop()
-
-    def button_event_test(self):
-        """
-        Method to open statistics window
-        """
-        if self.windowTest is None:
-            self.windowTest = WindowTest(self)
-            self.windowTest.mainloop()
+        if self.windows[index] is None:
+            self.windows[index] = WindowConfiguration(self) if index == 0 else WindowStatistics(self) if index == 1 else WindowTest(self)
+            self.windows[index].mainloop()
 
     @staticmethod
     def change_appearance_mode(new_appearance_mode):
@@ -161,10 +147,7 @@ class WindowHome(customtkinter.CTk):
         Method to close all windows of application
         """
         if tkinter.messagebox.askokcancel("Quit", "Do you want to quit?"):
-            try: self.windowConf.on_closing()
-            except (AttributeError, RuntimeError, Exception): pass
-            try: self.windowStats.on_closing()
-            except (AttributeError, RuntimeError, Exception): pass
-            try: self.windowTest.on_closing()
-            except (AttributeError, RuntimeError, Exception): pass
+            for window in self.windows:
+                try: window.on_closing()
+                except (AttributeError, RuntimeError, Exception): pass
             self.destroy()
