@@ -18,6 +18,11 @@ class ConfigFile:
     config_debug = "DEBUG"
     keys_debug = ["debug_classifier", "hide_warning_log_reg"]
     debug_default = ["False", "True"]
+    config_preprocess = "PREPROCESS"
+    keys_preprocess = ["stopwords", "stemming", "lemmatization", "digits", "expanding_contractions", "urls", "html_tags",
+                       "punctuation", "diacritics", "lowercase", "extra_whitespace", "use_idf", "n_grams", "max_df", "min_df"]
+    preprocess_default = ["True", "True", "True", "True", "True", "True", "True", "True", "True", "True", "True", "True",
+                          "1, 2", "0.95", "10"]
 
     def __init__(self):
         self.config_object = ConfigParser()
@@ -26,6 +31,9 @@ class ConfigFile:
             self.class_string, self.int_classes, self.name_classes = self.read_all_attributes_section(self.config_dataset, self.keys_dataset)
         self.switch_var = self.read_attribute(self.config_configuration, self.key_switch_var)
         self.debug_classifier, self.hide_warning_log_reg = self.read_all_attributes_section(self.config_debug, self.keys_debug)
+        self.stopwords, self.stemming, self.lemma, self.digits, self.expanding_contractions, self.urls, self.html_tags, self.punctuation,\
+            self.diacritics, self.lowercase, self.extra_whitespace, self.use_idf, self.n_grams, self.max_df, self.min_df = \
+            self.read_all_attributes_section(self.config_preprocess, self.keys_preprocess)
 
     def create_default_config_file(self):
         """
@@ -34,6 +42,7 @@ class ConfigFile:
         self.config_object[self.config_dataset] = create_dictionary(self.keys_dataset, self.dataset_default)
         self.config_object[self.config_configuration] = {self.key_switch_var: self.switch_var_default}
         self.config_object[self.config_debug] = create_dictionary(self.keys_debug, self.debug_default)
+        self.config_object[self.config_preprocess] = create_dictionary(self.keys_preprocess, self.preprocess_default)
         self.write_config_file()
 
     def is_present_config_file(self):

@@ -76,9 +76,15 @@ class Classifier:
         :return: Pipeline with TextPreprocessor and TfidfVectorizer
         """
         return Pipeline([
-            ('text_preproc', TextPreprocessor(language=self.config_file.language)),
-            ('tfidf', TfidfVectorizer(encoding='utf-8', ngram_range=(1, 2), stop_words=None,
-                                      lowercase=False, max_df=0.95, min_df=10, norm='l2', sublinear_tf=True))])
+            ('text_preproc', TextPreprocessor(self.config_file.language, self.config_file.stopwords,
+                                              self.config_file.stemming, self.config_file.lemma, self.config_file.digits,
+                                              self.config_file.expanding_contractions, self.config_file.urls,
+                                              self.config_file.html_tags, self.config_file.punctuation, self.config_file.diacritics,
+                                              self.config_file.lowercase, self.config_file.extra_whitespace)),
+            ('tfidf', TfidfVectorizer(encoding='utf-8', ngram_range=(int(self.config_file.n_grams.split(",")[0]),
+                                                                     int(self.config_file.n_grams.split(",")[1])),
+                                      stop_words=None, lowercase=False, max_df=self.config_file.max_df,
+                                      min_df=self.config_file.min_df, norm='l2', use_idf=self.config_file.use_idf, sublinear_tf=True))])
 
     def calculate_class(self, text):
         """

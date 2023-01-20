@@ -23,7 +23,7 @@ class WindowConfiguration(customtkinter.CTk):
 
         # ============ frame_config ============
         self.frame_config = customtkinter.CTkFrame(master=self)
-        self.frame_config.grid(row=7, column=2, pady=20, padx=20, sticky="nsew")
+        self.frame_config.grid(row=7, column=4, pady=20, padx=20, sticky="nsew")
 
         self.text_entry = self.config_file.read_all_attributes_section(self.config_file.config_dataset, self.config_file.keys_dataset)
 
@@ -102,6 +102,37 @@ class WindowConfiguration(customtkinter.CTk):
                                                                command=self.button_event_config[index]))
             self.buttons_config[index].grid(row=9, column=index, columnspan=1, pady=20, padx=20, sticky="we")
 
+        # ------------PREPROCESS---------------
+
+        label = customtkinter.CTkLabel(master=self.frame_config, text="Preprocessing:\nSelect what remove")
+        label.grid(row=0, column=3, pady=10, padx=10)
+
+        text_checkbox = ["Stopwords", "Stemming", "Lemmatization", "Digits", "Expanding Contractions", "Urls",
+                         "Html Tags", "Punctuation", "Diacritics", "Lowercase", "Extra Whitespace", "Use Idf"]
+        self.n_checkbox = len(text_checkbox)
+        self.check_var = [customtkinter.StringVar(value=str(att)) for att in
+                          self.config_file.read_all_attributes_section(self.config_file.config_preprocess, self.config_file.keys_preprocess)][:self.n_checkbox]
+
+        checkbox = []
+
+        for index in range(len(self.check_var)):
+            checkbox.append(customtkinter.CTkCheckBox(master=self.frame_config, text=text_checkbox[index],
+                                                      variable=self.check_var[index], onvalue="True", offvalue="False"))
+            checkbox[index].grid(row=1+index if index < int(self.n_checkbox/2) else 1+index-int(self.n_checkbox/2),
+                                 column=3 if index < int(self.n_checkbox/2) else 4, pady=10, padx=10)
+
+        text_entry = [att for att in self.config_file.read_all_attributes_section(
+            self.config_file.config_preprocess, self.config_file.keys_preprocess)][self.n_checkbox:]
+
+        text_label_preprocessing = ["N_Grams", "Max_df", "Min_df"]
+        self.entry_tfidf, label = [], []
+
+        for index in range(len(text_label_preprocessing)):
+            label.append(customtkinter.CTkLabel(master=self.frame_config, text=text_label_preprocessing[index]))
+            label[index].grid(row=int(self.n_checkbox/2)+1+index, column=3, pady=10, padx=10)
+            self.entry_tfidf.append(customtkinter.CTkEntry(master=self.frame_config, placeholder_text=text_entry[index]))
+            self.entry_tfidf[index].grid(row=int(self.n_checkbox/2)+1+index, column=4, pady=10, padx=10)
+
     def load_file(self, index):
         """
         Method to load file
@@ -129,10 +160,21 @@ class WindowConfiguration(customtkinter.CTk):
         modification_config = False
         for index in range(len(self.entry)+2):
             text_to_check = self.label_path_1[index].cget("text") if index < 2 else self.entry[index - 2].get()
-            if not text_to_check == self.config_file.read_attribute(self.config_file.config_dataset, self.config_file.keys_dataset[index]) and text_to_check != "":
+            if not text_to_check == self.config_file.read_attribute(
+                    self.config_file.config_dataset, self.config_file.keys_dataset[index]) and text_to_check != "":
                 self.config_file.update_config_file(self.config_file.config_dataset, self.config_file.keys_dataset[index], text_to_check)
                 modification_config = True
         self.config_file.update_config_file(self.config_file.config_configuration, self.config_file.key_switch_var, self.switch_var.get())
+        for index in range(len(self.check_var)):
+            if not self.check_var[index].get() == self.config_file.read_attribute(
+                    self.config_file.config_preprocess, self.config_file.keys_preprocess[index]):
+                self.config_file.update_config_file(self.config_file.config_preprocess, self.config_file.keys_preprocess[index], self.check_var[index].get())
+                modification_config = True
+        for index in range(len(self.entry_tfidf)):
+            if self.entry_tfidf[index].get() != "" and self.entry_tfidf[index].get() != self.config_file.read_attribute(
+                    self.config_file.config_preprocess, self.config_file.keys_preprocess[self.n_checkbox+index]):
+                self.config_file.update_config_file(self.config_file.config_preprocess, self.config_file.keys_preprocess[self.n_checkbox+index], self.entry_tfidf[index].get())
+                modification_config = True
         if modification_config: self.parentWindow.reload_config_classifier()
         self.on_closing()
 
@@ -146,6 +188,8 @@ class WindowConfiguration(customtkinter.CTk):
             else: self.label_path_1[index].configure(text=self.config_file.dataset_default[index])
         self.switch_var.set(self.config_file.switch_var_default)
         self.switch_event()
+        for index in range(len(self.check_var)): self.check_var[index].set(self.config_file.preprocess_default[index])
+        for index in range(len(self.entry)): self.entry[index].configure(text=self.config_file.preprocess_default[self.n_checkbox+index])
         self.parentWindow.reload_config_classifier()
 
     def on_closing(self):
