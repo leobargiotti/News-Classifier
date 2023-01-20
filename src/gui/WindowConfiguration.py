@@ -127,7 +127,7 @@ class WindowConfiguration(customtkinter.CTk):
         Method to save configuration
         """
         modification_config = False
-        for index in range(len(self.entry)):
+        for index in range(len(self.entry)+2):
             text_to_check = self.label_path_1[index].cget("text") if index < 2 else self.entry[index - 2].get()
             if not text_to_check == self.config_file.read_attribute(self.config_file.config_dataset, self.config_file.keys_dataset[index]) and text_to_check != "":
                 self.config_file.update_config_file(self.config_file.config_dataset, self.config_file.keys_dataset[index], text_to_check)
