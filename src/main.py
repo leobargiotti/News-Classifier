@@ -15,9 +15,9 @@ if __name__ == '__main__':
     download_if_non_existent('corpora/stopwords', 'stopwords')
     download_if_non_existent('tokenizers/punkt', 'punkt')
 
-    # directory main.py
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
     app = WindowHome([ClassifierTfidfMultinomialNB(),  ClassifierTfidfLogReg(), ClassifierTfidfSGD()],
                      ["MultinomialNB", "LogisticRegression", "SGDClassifier"])
+
     app.mainloop()

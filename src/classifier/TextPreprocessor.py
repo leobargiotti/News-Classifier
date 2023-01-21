@@ -160,5 +160,6 @@ class TextPreprocessor(TransformerMixin, BaseEstimator):
             .remove_stopwords(self.stopwords)\
             .remove_extra_whitespace(self.extra_whitespace)\
             .stem(self.stemming)\
-            .lemma(self.lemma)\
+            .lemma(self.lemma) \
+            .lowercase(self.lowercase) \
             .get_processed_text()

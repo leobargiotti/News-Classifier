@@ -104,7 +104,7 @@ class WindowConfiguration(customtkinter.CTk):
 
         # ------------PREPROCESS---------------
 
-        label = customtkinter.CTkLabel(master=self.frame_config, text="Preprocessing:\nSelect what remove")
+        label = customtkinter.CTkLabel(master=self.frame_config, text="Preprocessing:")
         label.grid(row=0, column=3, pady=10, padx=10)
 
         text_checkbox = ["Stopwords", "Stemming", "Lemmatization", "Digits", "Expanding Contractions", "Urls",
@@ -130,7 +130,8 @@ class WindowConfiguration(customtkinter.CTk):
         for index in range(len(text_label_preprocessing)):
             label.append(customtkinter.CTkLabel(master=self.frame_config, text=text_label_preprocessing[index]))
             label[index].grid(row=int(self.n_checkbox/2)+1+index, column=3, pady=10, padx=10)
-            self.entry_tfidf.append(customtkinter.CTkEntry(master=self.frame_config, placeholder_text=text_entry[index]))
+            self.entry_tfidf.append(customtkinter.CTkEntry(master=self.frame_config, placeholder_text=text_entry[index], height=10,
+                                                     corner_radius=6, fg_color=('white', "gray38")))
             self.entry_tfidf[index].grid(row=int(self.n_checkbox/2)+1+index, column=4, pady=10, padx=10)
 
     def load_file(self, index):
@@ -189,7 +190,7 @@ class WindowConfiguration(customtkinter.CTk):
         self.switch_var.set(self.config_file.switch_var_default)
         self.switch_event()
         for index in range(len(self.check_var)): self.check_var[index].set(self.config_file.preprocess_default[index])
-        for index in range(len(self.entry)): self.entry[index].configure(text=self.config_file.preprocess_default[self.n_checkbox+index])
+        for index in range(len(self.entry_tfidf)): self.entry_tfidf[index].configure(placeholder_text=self.config_file.preprocess_default[self.n_checkbox+index])
         self.parentWindow.reload_config_classifier()
 
     def on_closing(self):
