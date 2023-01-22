@@ -59,8 +59,7 @@ class ConfigFile:
         :param attributes: Array of the attributes of the section
         :return: array
         """
-        return [safe_execute(self.read_attribute(section, attribute), json.decoder.JSONDecodeError, json.loads,
-                                  self.read_attribute(section, attribute).lower()) for attribute in attributes]
+        return [self.read_attribute(section, attribute) for attribute in attributes]
 
     def read_attribute(self, section, attribute):
         """
@@ -70,7 +69,8 @@ class ConfigFile:
         :return: string of read value
         """
         self.config_object.read(self.config_file)
-        return self.config_object.get(section, attribute)
+        return safe_execute(self.config_object.get(section, attribute), json.decoder.JSONDecodeError, json.loads,
+                                  self.config_object.get(section, attribute).lower())
 
     def write_config_file(self):
         """
