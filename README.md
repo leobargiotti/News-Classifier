@@ -86,7 +86,7 @@ This application has these following buttons:
 * Classify
   * Calculates predicted class and its probability of the news written in textbox for each classifier.
 * Configuration Settings
-  * Allows to change dataset setting up some setting (for example the names of the columns relative to text to classify and to true label)
+  * Allows to change dataset setting up some setting (for example the names of the columns relative to text to classify and to true label) and all preprocess steps
 * Statistics
   * Displays statistics on:
     * Dataset:
