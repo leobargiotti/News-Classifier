@@ -12,10 +12,9 @@ def calculate_training_test(train, test, config_file):
     :param config_file: configuration file
     :return: list containing train-test split
     """
-    test_size, column_text, column_target = config_file.test_size, config_file.column_text, config_file.column_target
-    X, y = train[column_text], train[column_target]
-    if test is None: X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=0)
-    else: X_train, y_train, X_test, y_test = X, y, test[column_text], test[column_target]
+    X, y = train[config_file.column_text], train[config_file.column_target]
+    if test is None: X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=config_file.test_size, random_state=0)
+    else: X_train, y_train, X_test, y_test = X, y, test[config_file.column_text], test[config_file.column_target]
     return X_train, X_test, y_train, y_test
 
 
@@ -27,9 +26,8 @@ def calculate_train_test_classes(train, test, config_file):
     :param config_file: configuration file
     :return: list containing train-test split and dictionary of the classes
     """
-    class_string, int_classes, name_classes = config_file.class_string, config_file.int_classes, config_file.name_classes
     X_train, X_test, y_train, y_test = calculate_training_test(train, test, config_file)
-    if not class_string: classes = create_dictionary_classes(int_classes, name_classes)
+    if not config_file.class_string: classes = create_dictionary_classes(config_file.int_classes, config_file.name_classes)
     else: y_train, y_test, classes = encode_label_classes(y_train, y_test)
     return X_train, X_test, y_train, y_test, classes
 
@@ -83,13 +81,11 @@ def remove_duplicates_and_nan_values(config_file):
     :param config_file: configuration file
     :return: list containing train-test dataframe without duplicates and Nan values
     """
-    path_train, path_test, column_text, column_target = config_file.path_training, config_file.path_test, \
-        config_file.column_text, config_file.column_target
-    train_original = pd.read_csv(path_train)
-    train_cleaned = drop_duplicates_and_nan(train_original, column_text, column_target)
-    if path_test is not None:
-        test_original = pd.read_csv(path_test)
-        test_cleaned = drop_duplicates_and_nan(test_original, column_text, column_target)
+    train_original = pd.read_csv(config_file.path_training)
+    train_cleaned = drop_duplicates_and_nan(train_original, config_file.column_text, config_file.column_target)
+    if config_file.path_test is not None:
+        test_original = pd.read_csv(config_file.path_test)
+        test_cleaned = drop_duplicates_and_nan(test_original, config_file.column_text, config_file.column_target)
         return train_original, train_cleaned, test_original, test_cleaned
     else:
         return train_original, train_cleaned, None, None
