@@ -100,7 +100,7 @@ This application has these following buttons:
       * ROC Curve
       * Class Prediction Error
 * Test Models
-  * Tests fitted models on a different dataset
+  * Test fitted models on a different dataset
 
 The image below is the home of application:
 
